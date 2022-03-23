@@ -16,7 +16,7 @@ public class MosaicApp extends JFrame {
 	public MosaicApp(String title) {
 		super(title);
 		this.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
-		this.setLocation(350, 100);
+//		this.setLocation(350, 100);
 		MosaicPanel cp = new MosaicPanel();
 		this.add(cp);
 		this.pack();

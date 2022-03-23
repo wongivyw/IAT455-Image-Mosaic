@@ -8,11 +8,15 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+
+import src.MyColors;
+import src.TitleUI;
 
 public class MosaicPanel extends JPanel implements ActionListener {
 
@@ -20,13 +24,20 @@ public class MosaicPanel extends JPanel implements ActionListener {
 	private final int textHeight = 30;
 	private Timer timer;
 
-
 	public final static int PAN_W = 1400;
 	public final static int PAN_H = 750;
+	public final static int NUM_SRCIMG = 4;
+	public final static int FONT_SIZE_HEADER = 18;
+	public final static int FONT_SIZE_BODY = 16;
+
+	TitleUI introPage;
+	ArrayList<BufferedImage> srcImgs = new ArrayList<BufferedImage>();
 		
 	public MosaicPanel() {
 		setPreferredSize(new Dimension(PAN_W, PAN_H));
-		
+		setBackground(MyColors.red_700);
+
+		// SOURCE for mouse events taken from IAT 265 cafe project by Ivy
 		MyMouseListener ml = new MyMouseListener(); //mouse clicked
 		addMouseListener(ml);
 		MyMouseMotionListener mml = new MyMouseMotionListener(); //mouse dragged
@@ -36,17 +47,30 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		timer.start();
 		
 		try {
-			image = ImageIO.read(new File("cow.jpg")); 
+			image = ImageIO.read(new File("smileyFruit.jpeg")); 
 		} catch (Exception e) {
 			System.out.println("Cannot load the provided image");
 		}
+		
+		//add the image 4 times (needs to be modified)
+		for (int i = 0; i < NUM_SRCIMG; i++) {
+			srcImgs.add(image);
+		}
+		
+		//titleUI
+		introPage = new TitleUI(PAN_W, PAN_H, srcImgs);
+		
+		
 	}
-
+	
+	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.drawImage(image, 0, textHeight, null);
+//		g.drawImage(image, 0, textHeight, null);
+		
+		introPage.draw(g2);
 	}
 	
 	public int getWidth(){
@@ -63,6 +87,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		
 	}
 	
+// SOURCE for mouse events taken from IAT 265 cafe project by Ivy
 public class MyMouseListener extends MouseAdapter {
 		
 		public void mouseClicked(MouseEvent e) {
