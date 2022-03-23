@@ -144,7 +144,7 @@ public class MyMouseListener extends MouseAdapter {
 			//handles double click events
 			if (e.getClickCount() == 2) { 
 			//double clicked
-			System.out.println("mouse double clicked");
+//			System.out.println("mouse double clicked");
 
 			}
 			repaint();
