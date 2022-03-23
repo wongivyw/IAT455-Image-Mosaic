@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.Rectangle2D.Double;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -22,7 +24,6 @@ public class MosaicPanel extends JPanel implements ActionListener {
 
 	private BufferedImage image;
 	private final int textHeight = 30;
-	private Timer timer;
 
 	public final static int PAN_W = 1400;
 	public final static int PAN_H = 750;
@@ -30,6 +31,16 @@ public class MosaicPanel extends JPanel implements ActionListener {
 	public final static int FONT_SIZE_HEADER = 18;
 	public final static int FONT_SIZE_BODY = 16;
 
+	//interactive elements (the buttons)
+//	Rectangle2D.Double beginButton = new Rectangle2D.Double();
+//	Rectangle2D.Double chooseRandomButton = new Rectangle2D.Double();
+//	Rectangle2D.Double imgArea1 = new Rectangle2D.Double();
+//	Rectangle2D.Double imgArea2 = new Rectangle2D.Double();
+//	Rectangle2D.Double imgArea3 = new Rectangle2D.Double();
+//	Rectangle2D.Double imgArea4 = new Rectangle2D.Double();
+	Rectangle2D.Double beginButton, chooseRandomButton, imgArea1, imgArea2, imgArea3, imgArea4;
+
+	
 	TitleUI introPage;
 	ArrayList<BufferedImage> srcImgs = new ArrayList<BufferedImage>();
 		
@@ -42,9 +53,6 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		addMouseListener(ml);
 		MyMouseMotionListener mml = new MyMouseMotionListener(); //mouse dragged
 		addMouseMotionListener(mml);
-		
-		timer = new Timer(30, this);
-		timer.start();
 		
 		try {
 			image = ImageIO.read(new File("smileyFruit.jpeg")); 
@@ -59,7 +67,12 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		
 		//titleUI
 		introPage = new TitleUI(PAN_W, PAN_H, srcImgs);
-		
+		beginButton = introPage.getBeginButton();
+		chooseRandomButton = introPage.getChooseRandomButton();
+		imgArea1 = introPage.getImgArea1();
+		imgArea2 = introPage.getImgArea2();
+		imgArea3 = introPage.getImgArea3();
+		imgArea4 = introPage.getImgArea4();
 		
 	}
 	
@@ -68,7 +81,6 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//		g.drawImage(image, 0, textHeight, null);
 		
 		introPage.draw(g2);
 	}
@@ -83,8 +95,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+		repaint();
 	}
 	
 // SOURCE for mouse events taken from IAT 265 cafe project by Ivy
@@ -94,15 +105,27 @@ public class MyMouseListener extends MouseAdapter {
 			int eX = e.getX();
 			int eY = e.getY();
 //			System.out.println("mouse clicked");
+			if (beginButton.contains(eX, eY)) {
+				System.out.println("begin button clicked");
+			} else if (chooseRandomButton.contains(eX, eY)) {
+				System.out.println("choose random button clicked");
+			} else if (imgArea1.contains(eX, eY)) {
+				System.out.println("image area 1 clicked");
+			} else if (imgArea2.contains(eX, eY)) {
+				System.out.println("image area 2 clicked");
+			} else if (imgArea3.contains(eX, eY)) {
+				System.out.println("image area 3 clicked");
+			} else if (imgArea4.contains(eX, eY)) {
+				System.out.println("image area 4 clicked");
+			}
+			
 			//handles double click events
 			if (e.getClickCount() == 2) { 
-				//double clicked
-				System.out.println("mouse double clicked");
+			//double clicked
+//			System.out.println("mouse double clicked");
 
-			} else {
-			System.out.println("mouse clicked");
 			}
-
+			repaint();
 		}
 		
 		public void mousePressed(MouseEvent e) {
@@ -128,7 +151,7 @@ public class MyMouseListener extends MouseAdapter {
 			//to implement dragging on an item, modify mousePressed() and mouseDragged()
 			int eX = e.getX();
 			int eY = e.getY();
-			System.out.println("mouse dragged");
+//			System.out.println("mouse dragged");
 			repaint();
 		}
 	}
