@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import src.MosaicUI;
 import src.MyColors;
 import src.TitleUI;
 
@@ -31,17 +32,19 @@ public class MosaicPanel extends JPanel implements ActionListener {
 	public final static int FONT_SIZE_HEADER = 18;
 	public final static int FONT_SIZE_BODY = 16;
 
+	public final static int TITLE_UI = 0;
+	public final static int MOSAIC_UI = 1;
+	
+	private BufferedImage srcImage;
+	public int page;
+
 	//interactive elements (the buttons)
-//	Rectangle2D.Double beginButton = new Rectangle2D.Double();
-//	Rectangle2D.Double chooseRandomButton = new Rectangle2D.Double();
-//	Rectangle2D.Double imgArea1 = new Rectangle2D.Double();
-//	Rectangle2D.Double imgArea2 = new Rectangle2D.Double();
-//	Rectangle2D.Double imgArea3 = new Rectangle2D.Double();
-//	Rectangle2D.Double imgArea4 = new Rectangle2D.Double();
 	Rectangle2D.Double beginButton, chooseRandomButton, imgArea1, imgArea2, imgArea3, imgArea4;
+	Rectangle2D.Double editButton, createAnotherButton;
 
 	
 	TitleUI introPage;
+	MosaicUI mosaicPage;
 	ArrayList<BufferedImage> srcImgs = new ArrayList<BufferedImage>();
 		
 	public MosaicPanel() {
@@ -66,6 +69,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		}
 		
 		//titleUI
+		page = MOSAIC_UI;
 		introPage = new TitleUI(PAN_W, PAN_H, srcImgs);
 		beginButton = introPage.getBeginButton();
 		chooseRandomButton = introPage.getChooseRandomButton();
@@ -73,6 +77,12 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		imgArea2 = introPage.getImgArea2();
 		imgArea3 = introPage.getImgArea3();
 		imgArea4 = introPage.getImgArea4();
+		
+		//mosaicUI
+		srcImage = srcImgs.get(0);
+		mosaicPage = new MosaicUI(PAN_W, PAN_H, srcImage);
+		editButton = mosaicPage.getEditButton();
+		createAnotherButton = mosaicPage.getCreateAnotherButton();
 		
 	}
 	
@@ -82,7 +92,9 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
-		introPage.draw(g2);
+		if (page == TITLE_UI) introPage.draw(g2);
+		else if (page == MOSAIC_UI) mosaicPage.draw(g2);
+		
 	}
 	
 	public int getWidth(){
@@ -105,24 +117,34 @@ public class MyMouseListener extends MouseAdapter {
 			int eX = e.getX();
 			int eY = e.getY();
 //			System.out.println("mouse clicked");
-			if (beginButton.contains(eX, eY)) {
-				System.out.println("begin button clicked");
-			} else if (chooseRandomButton.contains(eX, eY)) {
-				System.out.println("choose random button clicked");
-			} else if (imgArea1.contains(eX, eY)) {
-				System.out.println("image area 1 clicked");
-			} else if (imgArea2.contains(eX, eY)) {
-				System.out.println("image area 2 clicked");
-			} else if (imgArea3.contains(eX, eY)) {
-				System.out.println("image area 3 clicked");
-			} else if (imgArea4.contains(eX, eY)) {
-				System.out.println("image area 4 clicked");
-			}
+			if (page == TITLE_UI) {
+				if (beginButton.contains(eX, eY)) {
+					System.out.println("begin button clicked");
+					page = MOSAIC_UI;
+				} else if (chooseRandomButton.contains(eX, eY)) {
+					System.out.println("choose random button clicked");
+				} else if (imgArea1.contains(eX, eY)) {
+					System.out.println("image area 1 clicked");
+				} else if (imgArea2.contains(eX, eY)) {
+					System.out.println("image area 2 clicked");
+				} else if (imgArea3.contains(eX, eY)) {
+					System.out.println("image area 3 clicked");
+				} else if (imgArea4.contains(eX, eY)) {
+					System.out.println("image area 4 clicked");
+				} 
+			} else if ((page == MOSAIC_UI)) {
+				if (editButton.contains(eX, eY)) {
+					System.out.println("edit button clicked");
+				} else if (createAnotherButton.contains(eX, eY)) {
+					System.out.println("create another button clicked");
+					page = TITLE_UI;
+				}
+			} 
 			
 			//handles double click events
 			if (e.getClickCount() == 2) { 
 			//double clicked
-//			System.out.println("mouse double clicked");
+			System.out.println("mouse double clicked");
 
 			}
 			repaint();
