@@ -20,6 +20,7 @@ import javax.swing.Timer;
 import src.MosaicUI;
 import src.MyColors;
 import src.TitleUI;
+import src.Util;
 
 public class MosaicPanel extends JPanel implements ActionListener {
 
@@ -34,6 +35,8 @@ public class MosaicPanel extends JPanel implements ActionListener {
 
 	public final static int TITLE_UI = 0;
 	public final static int MOSAIC_UI = 1;
+	
+	public final static int SCALED_IMAGE_SIZE = 2250;
 	
 	private BufferedImage srcImage;
 	public int page;
@@ -58,7 +61,10 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		addMouseMotionListener(mml);
 		
 		try {
+			// scales the image into a square
+			Util.resize("smileyFruit.jpeg", "smileyFruit.jpeg", SCALED_IMAGE_SIZE, SCALED_IMAGE_SIZE);
 			image = ImageIO.read(new File("smileyFruit.jpeg")); 
+			
 		} catch (Exception e) {
 			System.out.println("Cannot load the provided image");
 		}

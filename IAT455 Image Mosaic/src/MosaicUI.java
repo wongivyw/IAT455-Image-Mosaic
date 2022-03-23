@@ -20,7 +20,7 @@ public class MosaicUI {
 	Rectangle2D.Double panel;
 	private int width, height;
 	
-	BufferedImage srcImg;
+	BufferedImage srcImg, mosaicImage;
 	private int margin, oImageSize,oImageX,oImageY,mImageSize,mImageX,mImageY,
 				buttonWidth, buttonHeight,button1X, button1Y, button2X, button2Y;
 	Rectangle2D.Double oCard, mCard, button1, button2;
@@ -34,6 +34,7 @@ public class MosaicUI {
 		width = w;
 		height = h;
 		this.srcImg = srcImg;
+		mosaicImage = new MosaicOp(srcImg).getMosaicImage();
 		initialize();
 	}
 	
@@ -84,7 +85,7 @@ public class MosaicUI {
 		//mosaic image card
 		g2.fill(mCard);
 		//mosaic image
-		g2.drawImage(srcImg,mImageX,mImageY,mImageSize,mImageSize, null);
+		g2.drawImage(mosaicImage,mImageX,mImageY,mImageSize,mImageSize, null);
 		
 		//buttons 
 		g2.setColor(MyColors.button);
