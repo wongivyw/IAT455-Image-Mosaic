@@ -1,3 +1,4 @@
+package main;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -67,10 +68,14 @@ public class MyMouseListener extends MouseAdapter {
 		public void mouseClicked(MouseEvent e) {
 			int eX = e.getX();
 			int eY = e.getY();
-	
+//			System.out.println("mouse clicked");
 			//handles double click events
 			if (e.getClickCount() == 2) { 
 				//double clicked
+				System.out.println("mouse double clicked");
+
+			} else {
+			System.out.println("mouse clicked");
 			}
 
 		}
@@ -78,13 +83,15 @@ public class MyMouseListener extends MouseAdapter {
 		public void mousePressed(MouseEvent e) {
 			int eX = e.getX();
 			int eY = e.getY();
-			
+//			System.out.println("mouse pressed");
+
 			repaint();
 		}
 		
 		public void mouseReleased(MouseEvent e) {
 			int eX = e.getX();
 			int eY = e.getY();
+//			System.out.println("mouse released");
 
 			repaint();
 		}
@@ -96,7 +103,7 @@ public class MyMouseListener extends MouseAdapter {
 			//to implement dragging on an item, modify mousePressed() and mouseDragged()
 			int eX = e.getX();
 			int eY = e.getY();
-		
+			System.out.println("mouse dragged");
 			repaint();
 		}
 	}

@@ -1,3 +1,4 @@
+package main;
 
 // from CafeDemo.java by Ivy Wong in IAT 265 Assignment 4
 //**********************************************************/
