@@ -1,6 +1,6 @@
 package main;
 
-// from CafeDemo.java by Ivy Wong in IAT 265 Assignment 4
+// structure adapted from CafeDemo.java by Ivy Wong learned in IAT 265 Assignment 4
 //**********************************************************/
 import javax.imageio.ImageIO;
 import javax.media.jai.Histogram;

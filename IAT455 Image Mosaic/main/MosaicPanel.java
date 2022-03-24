@@ -1,3 +1,8 @@
+/*
+ * Structure of of elements such as paint component, graphics2D, 
+ * mouse interactions adapted from Ivy's IAT 265 Assignment 4
+ */
+
 package main;
 
 import java.awt.*;
@@ -22,6 +27,7 @@ import src.MosaicUI_Edit;
 import src.MyColors;
 import src.TitleUI;
 import src.Util;
+
 
 public class MosaicPanel extends JPanel implements ActionListener {
 

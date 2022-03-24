@@ -1,3 +1,6 @@
+/*
+ * MosaicUI_Edit is the class that draws a screen to the application, namely the edit mosaic result screen.
+ */
 package src;
 
 import java.awt.Color;

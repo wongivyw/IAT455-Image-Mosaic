@@ -1,3 +1,7 @@
+/*
+ * TitleUI draws the introduction screen to the application where users can choose to 
+ * begin with their selection of the image, or have the program choose a random one.
+ */
 package src;
 
 import java.awt.Color;

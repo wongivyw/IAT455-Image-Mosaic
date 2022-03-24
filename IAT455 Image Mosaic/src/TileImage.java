@@ -1,3 +1,6 @@
+/*
+ * TileImage holds the operations necessary to perform on a tile image for mosaic image creation.
+ */
 package src;
 
 import java.awt.image.BufferedImage;

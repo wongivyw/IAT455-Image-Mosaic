@@ -1,10 +1,16 @@
+/*
+ * MosaicOp performs functions on images to manipulate to create a mosaic effect.
+ */
 package src;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class MosaicOp {
-//	2250 is divisible by 2, 3, 5, 6, 9, 10, 15, 18, 25, 30, 45, 50, 75, 90, 125, 150, 225, 250, 375, 450, 750, 1125
+/*
+ * Tile size can be anything divisible by the size of the square source image. The size of the current source is 2250x2250.
+ * 	2250 is divisible by 2, 3, 5, 6, 9, 10, 15, 18, 25, 30, 45, 50, 75, 90, 125, 150, 225, 250, 375, 450, 750, 1125
+ */
 	public final static int TILE_SIZE = 90;
 
 	ArrayList<TileImage> tiles; // tile images used for mosaic

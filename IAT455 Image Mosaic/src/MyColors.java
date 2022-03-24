@@ -1,3 +1,6 @@
+/*
+ * MyColors stores colours of the application such as background, text color, and buttons.
+ */
 package src;
 
 import java.awt.Color;

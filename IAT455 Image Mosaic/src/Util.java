@@ -1,3 +1,7 @@
+/*
+ * Util is a class with static functions used throughout the program.
+ * These are helper functions for the program
+ */
 package src;
 
 import java.awt.Graphics2D;
@@ -8,7 +12,11 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Util {
-	// SOURCE to resize images in java: https://www.codejava.net/java-se/graphics/how-to-resize-images-in-java 
+	/*
+	 *  SOURCE to resize images in java: https://www.codejava.net/java-se/graphics/how-to-resize-images-in-java 
+	 *  This method accepts an input and output path where the modified size image is written to.
+	 *  If inputImagePath and outImagePath is the same, the image is overwritten.
+	 */
 	public static void resize(String inputImagePath, String outputImagePath, int scaledWidth, int scaledHeight)
 		throws IOException {
 		// reads input image

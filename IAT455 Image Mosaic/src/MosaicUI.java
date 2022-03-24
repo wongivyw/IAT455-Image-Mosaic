@@ -1,3 +1,7 @@
+/*
+ * MosaicUI is the screen that is drawn to the application showing the original image and mosaic image.
+ * It appears after the TitleUI screen.
+ */
 package src;
 
 import java.awt.Color;
