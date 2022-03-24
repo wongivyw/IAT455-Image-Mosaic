@@ -107,4 +107,8 @@ public class MosaicUI {
 	public Double getCreateAnotherButton() {
 		return button2;
 	}
+	
+	public BufferedImage getMosaicImage() {
+		return mosaicImage;
+	}
 }

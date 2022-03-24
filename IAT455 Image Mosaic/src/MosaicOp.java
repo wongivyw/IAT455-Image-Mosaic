@@ -27,7 +27,7 @@ public class MosaicOp {
 	}
 	
 	public BufferedImage getMosaicImage() {
-		return mosaicTest1(src, TILE_SIZE); // change to return mosaic image 
+		return mosaicTest(src, TILE_SIZE); // change to return mosaic image 
 	}
 	
 	/*this method splits the source image into tiles and stores them
@@ -38,7 +38,7 @@ public class MosaicOp {
 	}
 	
 	//testing without tile images. tile effect on original image
-	private BufferedImage mosaicTest1(BufferedImage src, int tileSize) {
+	private BufferedImage mosaicTest(BufferedImage src, int tileSize) {
 		BufferedImage result = new BufferedImage(width, height, src.getType());
 
 		int numTiles = width/tileSize;
@@ -56,6 +56,14 @@ public class MosaicOp {
 				
 				//TEST 2
 				//find most common color in tile and set the tile to that
+				
+				
+				/* Algorithm:
+				 * - Reduce source tile to lowest bits
+				 * - Obtain color from the source tile
+				 * - Color match with source tile color to color of tile images
+				 * - Best match = replace source tile with tile image
+				 */
 				
 				// for loop to iterate through the tiles
 				for (int k = 0; k < tileSize; k++) { //y

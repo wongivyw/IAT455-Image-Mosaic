@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import src.MosaicUI;
+import src.MosaicUI_Edit;
 import src.MyColors;
 import src.TitleUI;
 import src.Util;
@@ -35,6 +36,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 
 	public final static int TITLE_UI = 0;
 	public final static int MOSAIC_UI = 1;
+	public final static int MOSAIC_UI_EDIT = 2;
 	
 	public final static int SCALED_IMAGE_SIZE = 2250;
 	
@@ -43,11 +45,12 @@ public class MosaicPanel extends JPanel implements ActionListener {
 
 	//interactive elements (the buttons)
 	Rectangle2D.Double beginButton, chooseRandomButton, imgArea1, imgArea2, imgArea3, imgArea4;
-	Rectangle2D.Double editButton, createAnotherButton;
+	Rectangle2D.Double editButton, createAnotherButton, saveButton, editCreateAnotherButton;
 
 	
 	TitleUI introPage;
 	MosaicUI mosaicPage;
+	MosaicUI_Edit mosaicEditPage;
 	ArrayList<BufferedImage> srcImgs = new ArrayList<BufferedImage>();
 		
 	public MosaicPanel() {
@@ -75,7 +78,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		}
 		
 		//titleUI
-		page = MOSAIC_UI;
+		page = MOSAIC_UI_EDIT;
 		introPage = new TitleUI(PAN_W, PAN_H, srcImgs);
 		beginButton = introPage.getBeginButton();
 		chooseRandomButton = introPage.getChooseRandomButton();
@@ -90,6 +93,11 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		editButton = mosaicPage.getEditButton();
 		createAnotherButton = mosaicPage.getCreateAnotherButton();
 		
+		//mosaicUI_Edit
+		mosaicEditPage = new MosaicUI_Edit(PAN_W, PAN_H, mosaicPage.getMosaicImage());
+		saveButton = mosaicEditPage.getSaveButton();
+		editCreateAnotherButton = mosaicEditPage.getCreateAnotherButton();
+		
 	}
 	
 	@Override
@@ -100,7 +108,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		
 		if (page == TITLE_UI) introPage.draw(g2);
 		else if (page == MOSAIC_UI) mosaicPage.draw(g2);
-		
+		else if (page == MOSAIC_UI_EDIT) mosaicEditPage.draw(g2);
 	}
 	
 	public int getWidth(){
@@ -141,11 +149,19 @@ public class MyMouseListener extends MouseAdapter {
 			} else if ((page == MOSAIC_UI)) {
 				if (editButton.contains(eX, eY)) {
 					System.out.println("edit button clicked");
+					page = MOSAIC_UI_EDIT;
 				} else if (createAnotherButton.contains(eX, eY)) {
 					System.out.println("create another button clicked");
 					page = TITLE_UI;
 				}
-			} 
+			} else if (page == MOSAIC_UI_EDIT) {
+				if (saveButton.contains(eX, eY)) {
+			
+				} else if (editCreateAnotherButton.contains(eX, eY)) {
+					System.out.println("create another button clicked");
+					page = TITLE_UI;
+				}
+			}
 			
 			//handles double click events
 			if (e.getClickCount() == 2) { 
