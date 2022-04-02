@@ -82,8 +82,6 @@ public class MosaicUI_Edit {
 		option4 = new Rectangle2D.Double(option1X, option2Y, optionSize, optionSize);
 		option5 = new Rectangle2D.Double(option2X, option2Y, optionSize, optionSize);
 		option6 = new Rectangle2D.Double(option3X, option2Y, optionSize, optionSize);
-		
-		
 				
 	}
 	
@@ -104,7 +102,7 @@ public class MosaicUI_Edit {
 		//mosaic image card
 		g2.fill(mCard);
 		//mosaic image
-//		g2.drawImage(mosaicImage,mImageX,mImageY,mImageSize,mImageSize, null);
+		g2.drawImage(mosaicImage,mImageX,mImageY,mImageSize,mImageSize, null);
 		
 		//buttons 
 		g2.setColor(MyColors.button);

@@ -3,6 +3,7 @@
  */
 package src;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -10,12 +11,12 @@ import main.MosaicPanel;
 
 public class MosaicOp {
 /*
- * Tile size can be anything divisible by the size of the square source image. The size of the current source is 2250x2250.
- * 	2250 is divisible by 2, 3, 5, 6, 9, 10, 15, 18, 25, 30, 45, 50, 75, 90, 125, 150, 225, 250, 375, 450, 750, 1125
+ * Tile size can be anything divisible by the size of the square source image. The size of the current source is 5250x5250.
+ * 	5250 is divisible by 3, 5, 6, 7, 10, 14, 15, 21, 25, 30, 35, 42, 50, 70, 75, 105, 125, 150, 175, 210, 250, 350, 375,
+ *  525, 750, 875, 1050, 1750, 2625
  */
 	
-	public final static int NUM_TILES = 50; //srcImg size = 5250
-	public final static int TILE_SIZE = MosaicPanel.SCALED_IMAGE_SIZE/NUM_TILES;
+	public final static int TILE_SIZE = 50;
 
 	ArrayList<TileImage> tiles; // tile images used for mosaic
 	ArrayList<BufferedImage> srcTiles; // src image split up into tiles
@@ -37,7 +38,7 @@ public class MosaicOp {
 	}
 	
 	public BufferedImage getMosaicImage() {
-		return mosaicTest(src, TILE_SIZE); // change to return mosaic image 
+		return mosaicTest1(src, TILE_SIZE);
 	}
 	
 	/*this method splits the source image into tiles and stores them
@@ -48,7 +49,7 @@ public class MosaicOp {
 	}
 	
 	//testing without tile images. tile effect on original image
-	private BufferedImage mosaicTest(BufferedImage src, int tileSize) {
+	private BufferedImage mosaicTest1(BufferedImage src, int tileSize) {
 		BufferedImage result = new BufferedImage(width, height, src.getType());
 
 		int numTiles = width/tileSize;
@@ -65,9 +66,29 @@ public class MosaicOp {
 				int rgb = src.getRGB(posX, posY); //color of pixel in top left corner of tile
 				
 				//TEST 2
-				//find most common color in tile and set the tile to that
+				//find average color in tile and set the tile to that
+				// for loop to iterate through each pixel in tile
+				int red = 0, green = 0, blue = 0;
+				for (int k = 0; k < tileSize; k++) { //y
+					red=0;
+					green=0;
+					blue=0;
+					for (int l = 0; l < tileSize; l++) {//x
+						int rgba = src.getRGB(posX+l, posY+k);
+						red += getRed(rgba);
+						green += getGreen(rgba);
+						blue += getBlue(rgba);
+					}
+					
+				}
+				red = clip(red/tileSize);
+				green = clip(green/tileSize);
+				blue = clip(blue/tileSize);
+				int rgba = new Color(red, green, blue).getRGB();	
 				
+				//TEST 3:
 				
+								
 				/* Algorithm:
 				 * - Reduce source tile to lowest bits
 				 * - Obtain color from the source tile
@@ -75,10 +96,12 @@ public class MosaicOp {
 				 * - Best match = replace source tile with tile image
 				 */
 				
-				// for loop to iterate through the tiles
+				// for loop to iterate through each pixel in tile
 				for (int k = 0; k < tileSize; k++) { //y
 					for (int l = 0; l < tileSize; l++) {//x
-						result.setRGB(posX+l, posY+k, rgb);
+//						result.setRGB(posX+l, posY+k, rgb); // use top left corner in tile
+						result.setRGB(posX+l, posY+k, rgba); // use average color in tile
+
 					}
 				}
 				//change the color of the tile to the most common color
@@ -88,4 +111,22 @@ public class MosaicOp {
 		
 		return result;
 	}
+	
+	// helper methods
+	protected int getRed(int pixel) {
+		return (pixel >>> 16) & 0xFF;
+	}
+
+	protected int getGreen(int pixel) {
+		return (pixel >>> 8) & 0xFF;
+	}
+
+	protected int getBlue(int pixel) {
+		return pixel & 0xFF;
+	}
+    private int clip(int v) {
+        v = v > 255 ? 255 : v;
+        v = v < 0 ? 0 : v;
+        return v;
+    }
 }

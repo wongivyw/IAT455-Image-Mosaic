@@ -72,7 +72,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		try {
 			// scales the image into a square
 //			Util.resize("smileyFruit.jpeg", "smileyFruit-resized.jpeg", SCALED_IMAGE_SIZE, SCALED_IMAGE_SIZE);
-			BufferedImage smileyFruit = ImageIO.read(new File("smileyFruit.jpeg")); 
+			BufferedImage solidColor = ImageIO.read(new File("tiles/1024x1024-aero-blue-solid-color-background.jpg.")); 
 			
 //			Util.resize("mickey-minnie.jpg", "mickey-minnie-resized.jpg", SCALED_IMAGE_SIZE, SCALED_IMAGE_SIZE);
 			BufferedImage mickeyMinnie = ImageIO.read(new File("mickey-minnie.jpg")); 
@@ -87,7 +87,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 			BufferedImage stream = ImageIO.read(new File("stream.jpg")); 
 			
 //			image = mickeyMinnie;
-			srcImgs.add(mickeyMinnie);
+			srcImgs.add(solidColor);
 			srcImgs.add(arcDeTriomphe);
 			srcImgs.add(parrot);
 			srcImgs.add(stream);
