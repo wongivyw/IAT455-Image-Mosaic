@@ -28,7 +28,7 @@ public class MosaicUI_Edit {
 	String createAnother = "Create another mosaic"; //button2
 	String reset = "Reset changes";
 	
-	String addHue = "Add hue to mosiac";
+	String addHue = "Filter options:";
 
 	
 	public MosaicUI_Edit(int w, int h, BufferedImage mosaicImage) {
@@ -104,7 +104,7 @@ public class MosaicUI_Edit {
 		//mosaic image card
 		g2.fill(mCard);
 		//mosaic image
-		g2.drawImage(mosaicImage,mImageX,mImageY,mImageSize,mImageSize, null);
+//		g2.drawImage(mosaicImage,mImageX,mImageY,mImageSize,mImageSize, null);
 		
 		//buttons 
 		g2.setColor(MyColors.button);

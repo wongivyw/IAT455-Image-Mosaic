@@ -6,12 +6,16 @@ package src;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import main.MosaicPanel;
+
 public class MosaicOp {
 /*
  * Tile size can be anything divisible by the size of the square source image. The size of the current source is 2250x2250.
  * 	2250 is divisible by 2, 3, 5, 6, 9, 10, 15, 18, 25, 30, 45, 50, 75, 90, 125, 150, 225, 250, 375, 450, 750, 1125
  */
-	public final static int TILE_SIZE = 90;
+	
+	public final static int NUM_TILES = 50; //srcImg size = 5250
+	public final static int TILE_SIZE = MosaicPanel.SCALED_IMAGE_SIZE/NUM_TILES;
 
 	ArrayList<TileImage> tiles; // tile images used for mosaic
 	ArrayList<BufferedImage> srcTiles; // src image split up into tiles

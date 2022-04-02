@@ -31,7 +31,7 @@ import src.Util;
 
 public class MosaicPanel extends JPanel implements ActionListener {
 
-	private BufferedImage image;
+//	private BufferedImage image;
 	private final int textHeight = 30;
 
 	public final static int PAN_W = 1400;
@@ -44,7 +44,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 	public final static int MOSAIC_UI = 1;
 	public final static int MOSAIC_UI_EDIT = 2;
 	
-	public final static int SCALED_IMAGE_SIZE = 2250;
+	public final static int SCALED_IMAGE_SIZE = 5250;
 	
 	private BufferedImage srcImage;
 	public int page;
@@ -71,20 +71,38 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		
 		try {
 			// scales the image into a square
-			Util.resize("smileyFruit.jpeg", "smileyFruit.jpeg", SCALED_IMAGE_SIZE, SCALED_IMAGE_SIZE);
-			image = ImageIO.read(new File("smileyFruit.jpeg")); 
+//			Util.resize("smileyFruit.jpeg", "smileyFruit-resized.jpeg", SCALED_IMAGE_SIZE, SCALED_IMAGE_SIZE);
+			BufferedImage smileyFruit = ImageIO.read(new File("smileyFruit.jpeg")); 
 			
+//			Util.resize("mickey-minnie.jpg", "mickey-minnie-resized.jpg", SCALED_IMAGE_SIZE, SCALED_IMAGE_SIZE);
+			BufferedImage mickeyMinnie = ImageIO.read(new File("mickey-minnie.jpg")); 
+			
+//			Util.resize("arc-de-triomphe.jpg", "arc-de-triomphe-resized.jpg", SCALED_IMAGE_SIZE, SCALED_IMAGE_SIZE);
+			BufferedImage arcDeTriomphe = ImageIO.read(new File("arc-de-triomphe.jpg")); 
+			
+//			Util.resize("parrot.jpg", "parrot-resized.jpg", SCALED_IMAGE_SIZE, SCALED_IMAGE_SIZE);
+			BufferedImage parrot = ImageIO.read(new File("parrot.jpg")); 
+			
+//			Util.resize("stream.jpg", "stream-resized.jpg", SCALED_IMAGE_SIZE, SCALED_IMAGE_SIZE);
+			BufferedImage stream = ImageIO.read(new File("stream.jpg")); 
+			
+//			image = mickeyMinnie;
+			srcImgs.add(mickeyMinnie);
+			srcImgs.add(arcDeTriomphe);
+			srcImgs.add(parrot);
+			srcImgs.add(stream);
+
 		} catch (Exception e) {
 			System.out.println("Cannot load the provided image");
 		}
 		
 		//add the image 4 times (needs to be modified)
-		for (int i = 0; i < NUM_SRCIMG; i++) {
-			srcImgs.add(image);
-		}
+//		for (int i = 0; i < NUM_SRCIMG; i++) {
+//			srcImgs.add(image);
+//		}
 		
 		//titleUI
-		page = MOSAIC_UI_EDIT;
+		page = TITLE_UI;
 		introPage = new TitleUI(PAN_W, PAN_H, srcImgs);
 		beginButton = introPage.getBeginButton();
 		chooseRandomButton = introPage.getChooseRandomButton();
@@ -94,7 +112,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		imgArea4 = introPage.getImgArea4();
 		
 		//mosaicUI
-		srcImage = srcImgs.get(0);
+		srcImage = introPage.getSelectedImage();
 		mosaicPage = new MosaicUI(PAN_W, PAN_H, srcImage);
 		editButton = mosaicPage.getEditButton();
 		createAnotherButton = mosaicPage.getCreateAnotherButton();
@@ -113,16 +131,23 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
 		if (page == TITLE_UI) introPage.draw(g2);
-		else if (page == MOSAIC_UI) mosaicPage.draw(g2);
-		else if (page == MOSAIC_UI_EDIT) mosaicEditPage.draw(g2);
+		else if (page == MOSAIC_UI) {
+			srcImage = introPage.getSelectedImage();
+			mosaicPage = new MosaicUI(PAN_W, PAN_H, srcImage);
+			mosaicPage.draw(g2);
+		}
+		else if (page == MOSAIC_UI_EDIT) {
+			mosaicEditPage = new MosaicUI_Edit(PAN_W, PAN_H, mosaicPage.getMosaicImage());
+			mosaicEditPage.draw(g2);
+		}
 	}
 	
 	public int getWidth(){
-		return image.getWidth();
+		return srcImgs.get(0).getWidth();
 	}
 
 	public int getHeight(){
-		return image.getHeight() + textHeight;
+		return srcImgs.get(0).getHeight() + textHeight;
 	}
 
 	@Override
@@ -145,12 +170,16 @@ public class MyMouseListener extends MouseAdapter {
 					System.out.println("choose random button clicked");
 				} else if (imgArea1.contains(eX, eY)) {
 					System.out.println("image area 1 clicked");
+					introPage.setSelectedImage(1);
 				} else if (imgArea2.contains(eX, eY)) {
 					System.out.println("image area 2 clicked");
+					introPage.setSelectedImage(2);
 				} else if (imgArea3.contains(eX, eY)) {
 					System.out.println("image area 3 clicked");
+					introPage.setSelectedImage(3);
 				} else if (imgArea4.contains(eX, eY)) {
 					System.out.println("image area 4 clicked");
+					introPage.setSelectedImage(4);
 				} 
 			} else if ((page == MOSAIC_UI)) {
 				if (editButton.contains(eX, eY)) {
