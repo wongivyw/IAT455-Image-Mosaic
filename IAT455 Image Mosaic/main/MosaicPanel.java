@@ -48,6 +48,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 	
 	private BufferedImage srcImage;
 	public int page;
+	public BufferedImage solidColor, mickeyMinnie, arcDeTriomphe, parrot, stream;
 
 	//interactive elements (the buttons)
 	Rectangle2D.Double beginButton, chooseRandomButton, imgArea1, imgArea2, imgArea3, imgArea4;
@@ -60,6 +61,9 @@ public class MosaicPanel extends JPanel implements ActionListener {
 	MosaicUI mosaicPage;
 	MosaicUI_Edit mosaicEditPage;
 	ArrayList<BufferedImage> srcImgs = new ArrayList<BufferedImage>();
+	
+	//status of images loaded
+	boolean imagesLoaded;
 		
 	public MosaicPanel() {
 		setPreferredSize(new Dimension(PAN_W, PAN_H));
@@ -71,61 +75,97 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		MyMouseMotionListener mml = new MyMouseMotionListener(); //mouse dragged
 		addMouseMotionListener(mml);
 		
+		//fail indicators (if images cannot be loaded)
+		imagesLoaded = false;
+		solidColor = null;
+		mickeyMinnie = null;
+		arcDeTriomphe = null;
+		parrot = null;
+		stream = null;
+		
+		
+//		try {
+//			solidColor = ImageIO.read(new File("tiles/1024x1024-aero-blue-solid-color-background.jpg.")); 
+//		} catch (Exception e) {
+//			imagesLoaded = false;
+//			System.out.println("Cannot load the provided image: tiles/1024x1024-aero-blue-solid-color-background.jpg");
+//		}
+			
 		try {
-			// scales the image into a square
-//			Util.resize("smileyFruit.jpeg", "smileyFruit-resized.jpeg", SCALED_IMAGE_SIZE, SCALED_IMAGE_SIZE);
-			BufferedImage solidColor = ImageIO.read(new File("tiles/1024x1024-aero-blue-solid-color-background.jpg.")); 
-			
 //			Util.resize("mickey-minnie.jpg", "mickey-minnie-resized.jpg", SCALED_IMAGE_SIZE, SCALED_IMAGE_SIZE);
-			BufferedImage mickeyMinnie = ImageIO.read(new File("mickey-minnie.jpg")); 
+			mickeyMinnie = ImageIO.read(new File("mickey-minnie.jpg")); 
+		} catch (Exception e) {
+			imagesLoaded = false;
+			System.out.println("Cannot load the provided image: mickey-minnie.jpg");
+		}
 			
+		try {
 //			Util.resize("arc-de-triomphe.jpg", "arc-de-triomphe-resized.jpg", SCALED_IMAGE_SIZE, SCALED_IMAGE_SIZE);
-			BufferedImage arcDeTriomphe = ImageIO.read(new File("arc-de-triomphe.jpg")); 
+			arcDeTriomphe = ImageIO.read(new File("arc-de-triomphe.jpg")); 
+		} catch (Exception e) {
+			imagesLoaded = false;
+			System.out.println("Cannot load the provided image: arc-de-triomphe.jpg");
+		}
 			
+		try {
 //			Util.resize("parrot.jpg", "parrot-resized.jpg", SCALED_IMAGE_SIZE, SCALED_IMAGE_SIZE);
-			BufferedImage parrot = ImageIO.read(new File("parrot.jpg")); 
-			
+			parrot = ImageIO.read(new File("parrot.jpg")); 
+		} catch (Exception e) {
+			imagesLoaded = false;
+			System.out.println("Cannot load the provided image: parrot.jpg");
+		}
+		
+		try {	
 //			Util.resize("stream.jpg", "stream-resized.jpg", SCALED_IMAGE_SIZE, SCALED_IMAGE_SIZE);
-			BufferedImage stream = ImageIO.read(new File("stream.jpg")); 
+			stream = ImageIO.read(new File("stream.jpg")); 
+		} catch (Exception e) {
+			imagesLoaded = false;
+			System.out.println("Cannot load the provided image: stream.jpg");
+		}
+			
 			
 //			image = mickeyMinnie;
-			srcImgs.add(solidColor);
+		if (mickeyMinnie != null && 
+				arcDeTriomphe != null && 
+				parrot != null && 
+				stream != null) {
+			imagesLoaded = true;
+			srcImgs.add(mickeyMinnie);
 			srcImgs.add(arcDeTriomphe);
 			srcImgs.add(parrot);
 			srcImgs.add(stream);
+						
 
-		} catch (Exception e) {
-			System.out.println("Cannot load the provided image");
-		}
 		
 		//add the image 4 times (needs to be modified)
 //		for (int i = 0; i < NUM_SRCIMG; i++) {
 //			srcImgs.add(image);
 //		}
 		
-		//titleUI
-		page = TITLE_UI;
-		introPage = new TitleUI(PAN_W, PAN_H, srcImgs);
-		beginButton = introPage.getBeginButton();
-		chooseRandomButton = introPage.getChooseRandomButton();
-		imgArea1 = introPage.getImgArea1();
-		imgArea2 = introPage.getImgArea2();
-		imgArea3 = introPage.getImgArea3();
-		imgArea4 = introPage.getImgArea4();
-		
-		//mosaicUI
-		srcImage = introPage.getSelectedImage();
-		mosaicPage = new MosaicUI(PAN_W, PAN_H, srcImage);
-		editButton = mosaicPage.getEditButton();
-		createAnotherButton = mosaicPage.getCreateAnotherButton();
-		
-		//mosaicUI_Edit
-		mosaicEditPage = new MosaicUI_Edit(PAN_W, PAN_H, mosaicPage.getMosaicImage());
-		saveButton = mosaicEditPage.getSaveButton();
-		editCreateAnotherButton = mosaicEditPage.getCreateAnotherButton();
-		filterOptions = mosaicEditPage.getFilterOptions();
-		
-		
+			//titleUI
+			page = TITLE_UI;
+			introPage = new TitleUI(PAN_W, PAN_H, srcImgs);
+			beginButton = introPage.getBeginButton();
+			chooseRandomButton = introPage.getChooseRandomButton();
+			imgArea1 = introPage.getImgArea1();
+			imgArea2 = introPage.getImgArea2();
+			imgArea3 = introPage.getImgArea3();
+			imgArea4 = introPage.getImgArea4();
+			
+			//mosaicUI
+			srcImage = introPage.getSelectedImage();
+			mosaicPage = new MosaicUI(PAN_W, PAN_H, srcImage);
+			editButton = mosaicPage.getEditButton();
+			createAnotherButton = mosaicPage.getCreateAnotherButton();
+			
+			//mosaicUI_Edit
+			mosaicEditPage = new MosaicUI_Edit(PAN_W, PAN_H, mosaicPage.getMosaicImage());
+			saveButton = mosaicEditPage.getSaveButton();
+			editCreateAnotherButton = mosaicEditPage.getCreateAnotherButton();
+			filterOptions = mosaicEditPage.getFilterOptions();	
+			
+		}//if
+	
 	}
 	
 	@Override
@@ -147,11 +187,13 @@ public class MosaicPanel extends JPanel implements ActionListener {
 	}
 	
 	public int getWidth(){
-		return srcImgs.get(0).getWidth();
+		if (imagesLoaded) return srcImgs.get(0).getWidth();
+		return -1;
 	}
 
 	public int getHeight(){
-		return srcImgs.get(0).getHeight() + textHeight;
+		if(imagesLoaded) return srcImgs.get(0).getHeight() + textHeight;
+		return -1;
 	}
 
 	@Override
