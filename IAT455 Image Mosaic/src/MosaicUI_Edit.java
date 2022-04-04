@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Double;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import main.MosaicPanel;
 
@@ -29,6 +30,16 @@ public class MosaicUI_Edit {
 	String reset = "Reset changes";
 	
 	String addHue = "Filter options:";
+	
+	private final static int NO_FILTER = 0;
+	private final static int FILTER1 = 1;
+	private final static int FILTER2 = 2;
+	private final static int FILTER3 = 3;
+	private final static int FILTER4 = 4;
+	private final static int FILTER5 = 5;
+	private final static int FILTER6 = 6;
+	int numOptions = 6;
+	int selectedFilter;
 
 	
 	public MosaicUI_Edit(int w, int h, BufferedImage mosaicImage) {
@@ -37,6 +48,7 @@ public class MosaicUI_Edit {
 		this.mosaicImage = mosaicImage;
 //		mosaicImageEdited = mosaicImage; //new EditOp(mosaicImage).getImage(mosaicImage);
 		initialize();
+		selectedFilter = NO_FILTER;
 	}
 	
 	private void initialize() {
@@ -86,6 +98,8 @@ public class MosaicUI_Edit {
 	}
 	
 	public void draw(Graphics2D g2) {
+		userFilters();
+		
 		g2.setColor(MyColors.red_500);
 		g2.fill(panel);
 		
@@ -137,11 +151,65 @@ public class MosaicUI_Edit {
 
 	}
 	
+	private void userFilters() {
+		switch (selectedFilter) {
+		case NO_FILTER:
+			break;
+		case FILTER1:
+			mosaicImage = addHue(Color.RED, mosaicImage, 0.5);
+			break;
+		case FILTER2:
+			mosaicImage = addHue(Color.GREEN, mosaicImage, 0.5);
+			break;
+		case FILTER3:
+			mosaicImage = addHue(Color.BLUE, mosaicImage, 0.5);
+			break;
+		case FILTER4:
+			mosaicImage = addHue(Color.CYAN, mosaicImage, 0.5);
+			break;
+		case FILTER5:
+			mosaicImage = addHue(Color.PINK, mosaicImage, 0.5);
+			break;
+		case FILTER6:
+			mosaicImage = addHue(Color.ORANGE, mosaicImage, 0.5);
+			break;
+		default:
+			break;
+		}
+	}
+	
+	private BufferedImage addHue(Color c, BufferedImage mosaicImage, double sourcePercentage) {
+		double srcMix = sourcePercentage; //% of color in image after filter is applied
+		double cMix = 1-srcMix; 
+		
+		// use a percentage of the source image mixed with a percentage of the filter to create hue effect
+		
+		
+		return mosaicImage;
+	}
+	
 	public Double getSaveButton() {
 		return button1;
 	}
 
 	public Double getCreateAnotherButton() {
 		return button2;
+	}
+	
+	public ArrayList<Rectangle2D.Double> getFilterOptions() {
+		ArrayList<Rectangle2D.Double> filterOptions = new ArrayList<Rectangle2D.Double>();
+		filterOptions.add(option1);
+		filterOptions.add(option2);
+		filterOptions.add(option3);
+		filterOptions.add(option4);
+		filterOptions.add(option5);
+		filterOptions.add(option6);
+		return filterOptions;
+	}
+	
+	public void setFilterOption(int optionNumber) {
+		if (optionNumber > numOptions) selectedFilter = NO_FILTER;
+		else if (optionNumber < 0) selectedFilter = NO_FILTER;
+		else selectedFilter = optionNumber;
 	}
 }

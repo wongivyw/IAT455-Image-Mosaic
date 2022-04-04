@@ -41,12 +41,6 @@ public class MosaicOp {
 		return mosaicTest1(src, TILE_SIZE);
 	}
 	
-	/*this method splits the source image into tiles and stores them
-	* in an arraylist
-	*/
-	private void splitImageIntoTiles() {
-		
-	}
 	
 	//testing without tile images. tile effect on original image
 	private BufferedImage mosaicTest1(BufferedImage src, int tileSize) {
@@ -61,11 +55,11 @@ public class MosaicOp {
 				//for each tile
 				posX = tileSize*j; //top left corner of the tile in x-axis
 				
-				//TEST 1
+				//TEST 1 -- completed
 //				change the whole tile to the color of pixel in top left corner of tile
 				int rgb = src.getRGB(posX, posY); //color of pixel in top left corner of tile
 				
-				//TEST 2
+				//TEST 2 -- completed
 				//find average color in tile and set the tile to that
 				// for loop to iterate through each pixel in tile
 				int red = 0, green = 0, blue = 0;

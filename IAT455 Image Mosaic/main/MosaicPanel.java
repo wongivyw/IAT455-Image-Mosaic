@@ -52,6 +52,8 @@ public class MosaicPanel extends JPanel implements ActionListener {
 	//interactive elements (the buttons)
 	Rectangle2D.Double beginButton, chooseRandomButton, imgArea1, imgArea2, imgArea3, imgArea4;
 	Rectangle2D.Double editButton, createAnotherButton, saveButton, editCreateAnotherButton;
+	ArrayList<Rectangle2D.Double> filterOptions = new ArrayList<Rectangle2D.Double>();
+	Rectangle2D.Double filterOption1, filterOption2, filterOption3, filterOption4, filterOption5, filterOption6;
 
 	
 	TitleUI introPage;
@@ -121,6 +123,8 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		mosaicEditPage = new MosaicUI_Edit(PAN_W, PAN_H, mosaicPage.getMosaicImage());
 		saveButton = mosaicEditPage.getSaveButton();
 		editCreateAnotherButton = mosaicEditPage.getCreateAnotherButton();
+		filterOptions = mosaicEditPage.getFilterOptions();
+		
 		
 	}
 	
@@ -164,37 +168,47 @@ public class MyMouseListener extends MouseAdapter {
 //			System.out.println("mouse clicked");
 			if (page == TITLE_UI) {
 				if (beginButton.contains(eX, eY)) {
-					System.out.println("begin button clicked");
+//					System.out.println("begin button clicked");
 					page = MOSAIC_UI;
 				} else if (chooseRandomButton.contains(eX, eY)) {
-					System.out.println("choose random button clicked");
+//					System.out.println("choose random button clicked");
 				} else if (imgArea1.contains(eX, eY)) {
-					System.out.println("image area 1 clicked");
+//					System.out.println("image area 1 clicked");
 					introPage.setSelectedImage(1);
 				} else if (imgArea2.contains(eX, eY)) {
-					System.out.println("image area 2 clicked");
+//					System.out.println("image area 2 clicked");
 					introPage.setSelectedImage(2);
 				} else if (imgArea3.contains(eX, eY)) {
-					System.out.println("image area 3 clicked");
+//					System.out.println("image area 3 clicked");
 					introPage.setSelectedImage(3);
 				} else if (imgArea4.contains(eX, eY)) {
-					System.out.println("image area 4 clicked");
+//					System.out.println("image area 4 clicked");
 					introPage.setSelectedImage(4);
 				} 
 			} else if ((page == MOSAIC_UI)) {
 				if (editButton.contains(eX, eY)) {
-					System.out.println("edit button clicked");
+//					System.out.println("edit button clicked");
 					page = MOSAIC_UI_EDIT;
 				} else if (createAnotherButton.contains(eX, eY)) {
-					System.out.println("create another button clicked");
+//					System.out.println("create another button clicked");
 					page = TITLE_UI;
 				}
 			} else if (page == MOSAIC_UI_EDIT) {
 				if (saveButton.contains(eX, eY)) {
 			
 				} else if (editCreateAnotherButton.contains(eX, eY)) {
-					System.out.println("create another button clicked");
+//					System.out.println("create another button clicked");
 					page = TITLE_UI;
+				} else if (editCreateAnotherButton.contains(eX, eY)) {
+//					System.out.println("create another button clicked");
+					
+				} else {
+					for (int i = 0; i < filterOptions.size(); i++) {
+						if (filterOptions.get(i).contains(eX, eY)) {
+							mosaicEditPage.setFilterOption(i);
+//							System.out.println("Filter option: " + i + " clicked");
+						}
+					}
 				}
 			}
 			
