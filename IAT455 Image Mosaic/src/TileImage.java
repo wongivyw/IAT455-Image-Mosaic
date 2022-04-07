@@ -58,4 +58,12 @@ public class TileImage {
 		blue = Util.clip(blue/numPixelsInImage);
 		return new Color(red, green, blue);
 	}
+
+	private BufferedImage removeBackground() {
+		BufferedImage rm = image;
+		//remove background of image
+		
+		
+		return rm;
+	}
 }

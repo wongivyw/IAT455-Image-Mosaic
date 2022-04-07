@@ -46,7 +46,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 	public final static int MOSAIC_UI_EDIT = 2;
 	
 	public final static int SCALED_IMAGE_SIZE = 1280;
-	public final static int SCALED_TILE_IMAGE_SIZE = 160;
+	public final static int SCALED_TILE_IMAGE_SIZE = 40;
 //	 * 1280 is divisible by are 1, 2, 4, 5, 8, 10, 16, 20, 32, 40, 64, 80, 128, 160, 256, 320, 640, and 1280.
 
 	
@@ -161,18 +161,49 @@ public class MosaicPanel extends JPanel implements ActionListener {
 			srcImgs.add(parrot);
 			srcImgs.add(stream);
 		}
+		if (!imagesLoaded) System.out.println("Source images not loaded properly.");
+
 		return imagesLoaded;
 	}
 	
 	public boolean loadTileImages() {
-		String imgPath1 = "tiles/1024x1024-aero-blue-solid-color-background.jpg";
-		String imgPath2 = "tiles/1024x1024-aero-solid-color-background.jpg";
-		String imgPath3 = "tiles/1024x1024-african-violet-solid-color-background.jpg";
-		String imgPath4 = "tiles/1024x1024-air-force-blue-solid-color-background.jpg";
-		String imgPath5 = "tiles/1024x1024-air-force-dark-blue-solid-color-background.jpg";
-		String imgPath6 = "tiles/1024x1024-air-superiority-blue-solid-color-background.jpg";
-		String imgPath7 = "tiles/1024x1024-alabama-crimson-solid-color-background.jpg";
-		String imgPath8 = "tiles/1024x1024-alice-blue-solid-color-background.jpg";
+//		String imgPath1 = "tiles/1024x1024-aero-blue-solid-color-background.jpg";
+//		String imgPath2 = "tiles/1024x1024-aero-solid-color-background.jpg";
+//		String imgPath3 = "tiles/1024x1024-african-violet-solid-color-background.jpg";
+//		String imgPath4 = "tiles/1024x1024-air-force-blue-solid-color-background.jpg";
+//		String imgPath5 = "tiles/1024x1024-air-force-dark-blue-solid-color-background.jpg";
+//		String imgPath6 = "tiles/1024x1024-air-superiority-blue-solid-color-background.jpg";
+//		String imgPath7 = "tiles/1024x1024-alabama-crimson-solid-color-background.jpg";
+//		String imgPath8 = "tiles/1024x1024-alice-blue-solid-color-background.jpg";
+		
+		String imgPath1 = "originalTiles/t1.jpg";
+		String imgPath2 = "originalTiles/t2.jpg";
+		String imgPath3 = "originalTiles/t3.jpg";
+		String imgPath4 = "originalTiles/t4.jpg";
+		String imgPath5 = "originalTiles/t5.jpg";
+		String imgPath6 = "originalTiles/t6.jpg";
+		String imgPath7 = "originalTiles/t7.jpg";
+		String imgPath8 = "originalTiles/t8.jpg";
+		String imgPath9 = "originalTiles/t9.jpg";
+		String imgPath10 = "originalTiles/t10.jpg";
+
+		String imgPath11 = "originalTiles/t11.jpg";
+		String imgPath12 = "originalTiles/t12.jpg";
+		String imgPath13 = "originalTiles/t13.jpg";
+		String imgPath14 = "originalTiles/t14.jpg";
+		String imgPath15 = "originalTiles/t15.jpg";
+		String imgPath16 = "originalTiles/t16.jpg";
+		String imgPath17 = "originalTiles/t17.jpg";
+		String imgPath18 = "originalTiles/t18.jpg";
+		String imgPath19 = "originalTiles/t19.jpg";
+
+		String imgPath20 = "originalTiles/t20.jpg";
+		String imgPath21 = "originalTiles/t21.jpg";
+		String imgPath22 = "originalTiles/t22.jpg";
+		String imgPath23 = "originalTiles/t23.jpg";
+		String imgPath24 = "originalTiles/t24.jpg";
+		String imgPath25 = "originalTiles/t25.jpg";
+		String imgPath26 = "originalTiles/t26.jpg";
 		
 		TileImage tile1 = new TileImage(imgPath1, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
 		TileImage tile2 = new TileImage(imgPath2, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
@@ -182,36 +213,63 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		TileImage tile6 = new TileImage(imgPath6, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
 		TileImage tile7 = new TileImage(imgPath7, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
 		TileImage tile8 = new TileImage(imgPath8, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile9 = new TileImage(imgPath9, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile10 = new TileImage(imgPath10, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
 		
-		if (tile1.getAverageColor() != null) {
-			tileImgs.add(tile1);
-		}
-		if (tile2.getAverageColor() != null) {
-			tileImgs.add(tile2);
-		}
-		if (tile3.getAverageColor() != null) {
-			tileImgs.add(tile3);
-		}
-		if (tile4.getAverageColor() != null) {
-			tileImgs.add(tile4);
-		}
-		if (tile5.getAverageColor() != null) {
-			tileImgs.add(tile5);
-		}
-		if (tile6.getAverageColor() != null) {
-			tileImgs.add(tile6);
-		}
-		if (tile7.getAverageColor() != null) {
-			tileImgs.add(tile7);
-		}
-		if (tile8.getAverageColor() != null) {
-			tileImgs.add(tile8);
-		}
+		TileImage tile11 = new TileImage(imgPath11, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile12 = new TileImage(imgPath12, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile13 = new TileImage(imgPath13, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile14 = new TileImage(imgPath14, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile15 = new TileImage(imgPath15, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile16 = new TileImage(imgPath16, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile17 = new TileImage(imgPath17, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile18 = new TileImage(imgPath18, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile19 = new TileImage(imgPath19, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile20 = new TileImage(imgPath20, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
 		
-		if (tileImgs.size() == 8) return true;
+		TileImage tile21 = new TileImage(imgPath21, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile22 = new TileImage(imgPath22, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile23 = new TileImage(imgPath23, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile24 = new TileImage(imgPath24, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile25 = new TileImage(imgPath25, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile26 = new TileImage(imgPath26, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+
+		if (tile1.getAverageColor() != null) tileImgs.add(tile1);
+		if (tile2.getAverageColor() != null) tileImgs.add(tile2);
+		if (tile3.getAverageColor() != null) tileImgs.add(tile3);
+		if (tile4.getAverageColor() != null) tileImgs.add(tile4);
+		if (tile5.getAverageColor() != null) tileImgs.add(tile5);
+		if (tile6.getAverageColor() != null) tileImgs.add(tile6);
+		if (tile7.getAverageColor() != null) tileImgs.add(tile7);
+		if (tile8.getAverageColor() != null) tileImgs.add(tile8);
+		if (tile9.getAverageColor() != null) tileImgs.add(tile9);
+		if (tile10.getAverageColor() != null) tileImgs.add(tile10);
+
+		if (tile11.getAverageColor() != null) tileImgs.add(tile11);
+		if (tile12.getAverageColor() != null) tileImgs.add(tile12);
+		if (tile13.getAverageColor() != null) tileImgs.add(tile13);
+		if (tile14.getAverageColor() != null) tileImgs.add(tile14);
+		if (tile15.getAverageColor() != null) tileImgs.add(tile15);
+		if (tile16.getAverageColor() != null) tileImgs.add(tile16);
+		if (tile17.getAverageColor() != null) tileImgs.add(tile17);
+		if (tile18.getAverageColor() != null) tileImgs.add(tile18);
+		if (tile19.getAverageColor() != null) tileImgs.add(tile19);
+		if (tile20.getAverageColor() != null) tileImgs.add(tile20);
+		
+		if (tile21.getAverageColor() != null) tileImgs.add(tile21);
+		if (tile22.getAverageColor() != null) tileImgs.add(tile22);
+		if (tile23.getAverageColor() != null) tileImgs.add(tile23);
+		if (tile24.getAverageColor() != null) tileImgs.add(tile24);
+		if (tile25.getAverageColor() != null) tileImgs.add(tile25);
+		if (tile26.getAverageColor() != null) tileImgs.add(tile26);
+
+		int numImages = 26;
+
+		if (tileImgs.size() == numImages) return true;
+		System.out.println("Tile images not loaded properly.");
 		return false;
 		
-//		return true;
+			
 	}
 	
 	@Override
