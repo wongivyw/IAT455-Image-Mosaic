@@ -28,17 +28,20 @@ public class MosaicUI {
 	private int margin, oImageSize,oImageX,oImageY,mImageSize,mImageX,mImageY,
 				buttonWidth, buttonHeight,button1X, button1Y, button2X, button2Y;
 	Rectangle2D.Double oCard, mCard, button1, button2;
+	ArrayList<TileImage> tiles;
 
 	String title = "Result of your selection";
 	String edit = "Edit mosaic image";
 	String createAnother = "Create another mosaic";
 
 	
-	public MosaicUI(int w, int h, BufferedImage srcImg) {
+	public MosaicUI(int w, int h, BufferedImage srcImg, ArrayList<TileImage> tiles, int tileSize) {
 		width = w;
 		height = h;
 		this.srcImg = srcImg;
-		mosaicImage = new MosaicOp(srcImg).getMosaicImage();
+		this.tiles = tiles;
+		mosaicImage = new MosaicOp(srcImg, tiles, tileSize).getMosaicImage();
+//		mosaicImage = new BufferedImage(0,0,1);
 		initialize();
 	}
 	

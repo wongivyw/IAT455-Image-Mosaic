@@ -37,4 +37,22 @@ public class Util {
 		// writes to output file
 		ImageIO.write(outputImage, formatName, new File(outputImagePath));
 	}
+	
+	// helper methods
+	public static int getRed(int pixel) {
+		return (pixel >>> 16) & 0xFF;
+	}
+
+	public static int getGreen(int pixel) {
+		return (pixel >>> 8) & 0xFF;
+	}
+
+	public static int getBlue(int pixel) {
+		return pixel & 0xFF;
+	}
+    public static int clip(int v) {
+        v = v > 255 ? 255 : v;
+        v = v < 0 ? 0 : v;
+        return v;
+    }
 }
