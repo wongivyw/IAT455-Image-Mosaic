@@ -32,8 +32,8 @@ public class TileImage {
 	}
 	
 	public BufferedImage getImage() {
-		return image;
-//		return bkgRemoved;
+//		return image;
+		return bkgRemoved;
 	}
 	
 	public Color getAverageColor() {
