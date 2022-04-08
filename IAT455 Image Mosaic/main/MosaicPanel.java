@@ -22,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import src.Animation;
 import src.MosaicUI;
 import src.MosaicUI_Edit;
 import src.MyColors;
@@ -35,8 +36,8 @@ public class MosaicPanel extends JPanel implements ActionListener {
 //	private BufferedImage image;
 	private final int textHeight = 30;
 
-	public final static int PAN_W = 1400;
-	public final static int PAN_H = 750;
+	public final static int PAN_W = 1133;//1400;
+	public final static int PAN_H = 744;//750;
 	public final static int NUM_SRCIMG = 4;
 	public final static int FONT_SIZE_HEADER = 18;
 	public final static int FONT_SIZE_BODY = 16;
@@ -49,9 +50,9 @@ public class MosaicPanel extends JPanel implements ActionListener {
 	public final static int SCALED_TILE_IMAGE_SIZE = 40;
 //	 * 1280 is divisible by are 1, 2, 4, 5, 8, 10, 16, 20, 32, 40, 64, 80, 128, 160, 256, 320, 640, and 1280.
 
+	public final static int TIME_BETWEEN_FRAMES = 5; // 5/30 of a second
 	
-	
-	private BufferedImage srcImage;
+	private BufferedImage srcImage, intro;
 	public int page;
 	public BufferedImage solidColor, mickeyMinnie, arcDeTriomphe, parrot, stream;
 
@@ -60,7 +61,6 @@ public class MosaicPanel extends JPanel implements ActionListener {
 	Rectangle2D.Double editButton, createAnotherButton, saveButton, editCreateAnotherButton;
 	ArrayList<Rectangle2D.Double> filterOptions = new ArrayList<Rectangle2D.Double>();
 	Rectangle2D.Double filterOption1, filterOption2, filterOption3, filterOption4, filterOption5, filterOption6;
-
 	
 	TitleUI introPage;
 	MosaicUI mosaicPage;
@@ -68,6 +68,9 @@ public class MosaicPanel extends JPanel implements ActionListener {
 	ArrayList<BufferedImage> srcImgs = new ArrayList<BufferedImage>();
 	ArrayList<TileImage> tileImgs = new ArrayList<TileImage>(); // tile images used for mosaic
 
+	private Timer timer;
+	int animationTimer; //every 1 second = 30 frames
+	Animation animation;
 	
 	//status of images loaded
 	boolean imagesLoaded;
@@ -75,15 +78,19 @@ public class MosaicPanel extends JPanel implements ActionListener {
 	public MosaicPanel() {
 		//UNCOMMENT TO DRAW APPLICATION (COMMENTED OUT DURING TESTING)
 		setPreferredSize(new Dimension(PAN_W, PAN_H));
-		setBackground(MyColors.red_700);
+//		setBackground(MyColors.red_700);
 
 		// SOURCE for mouse events taken from IAT 265 cafe project by Ivy
 		MyMouseListener ml = new MyMouseListener(); //mouse clicked
 		addMouseListener(ml);
 		MyMouseMotionListener mml = new MyMouseMotionListener(); //mouse dragged
 		addMouseMotionListener(mml);
+		
+
+//		loadScreenImages(); //new UI
 
 		if (loadSrcImages() && loadTileImages()) {
+			
 			//titleUI
 			page = TITLE_UI;
 			introPage = new TitleUI(PAN_W, PAN_H, srcImgs);
@@ -107,7 +114,20 @@ public class MosaicPanel extends JPanel implements ActionListener {
 			filterOptions = mosaicEditPage.getFilterOptions();	
 			
 		}//if
+		
+		//animation of pixelation (reducing to one color)
+		timer = new Timer(30, this);
+		timer.start();
+		animationTimer = TIME_BETWEEN_FRAMES;
+	}
 	
+	public void loadScreenImages() {
+		try {
+			intro = ImageIO.read(new File("intro.png")); 
+		} catch (Exception e) {
+			imagesLoaded = false;
+			System.out.println("Cannot load the provided image: intro.png");
+		}
 	}
 	
 	public boolean loadSrcImages() {
@@ -121,7 +141,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		
 		try {
 			Util.resize("mickey-minnie.jpg", "mickey-minnie-scaled.jpg", SCALED_IMAGE_SIZE, SCALED_IMAGE_SIZE);
-			mickeyMinnie = ImageIO.read(new File("mickey-minnie.jpg")); 
+			mickeyMinnie = ImageIO.read(new File("mickey-minnie-scaled.jpg")); 
 		} catch (Exception e) {
 			imagesLoaded = false;
 			System.out.println("Cannot load the provided image: mickey-minnie.jpg");
@@ -129,7 +149,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 			
 		try {
 			Util.resize("arc-de-triomphe.jpg", "arc-de-triomphe-scaled.jpg", SCALED_IMAGE_SIZE, SCALED_IMAGE_SIZE);
-			arcDeTriomphe = ImageIO.read(new File("arc-de-triomphe.jpg")); 
+			arcDeTriomphe = ImageIO.read(new File("arc-de-triomphe-scaled.jpg")); 
 		} catch (Exception e) {
 			imagesLoaded = false;
 			System.out.println("Cannot load the provided image: arc-de-triomphe.jpg");
@@ -137,7 +157,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 			
 		try {
 			Util.resize("parrot.jpg", "parrot-scaled.jpg", SCALED_IMAGE_SIZE, SCALED_IMAGE_SIZE);
-			parrot = ImageIO.read(new File("parrot.jpg")); 
+			parrot = ImageIO.read(new File("parrot-scaled.jpg")); 
 		} catch (Exception e) {
 			imagesLoaded = false;
 			System.out.println("Cannot load the provided image: parrot.jpg");
@@ -145,7 +165,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		
 		try {	
 			Util.resize("stream.jpg", "stream-scaled.jpg", SCALED_IMAGE_SIZE, SCALED_IMAGE_SIZE);
-			stream = ImageIO.read(new File("stream.jpg")); 
+			stream = ImageIO.read(new File("stream-scaled.jpg")); 
 		} catch (Exception e) {
 			imagesLoaded = false;
 			System.out.println("Cannot load the provided image: stream.jpg");
@@ -283,13 +303,33 @@ public class MosaicPanel extends JPanel implements ActionListener {
 			srcImage = introPage.getSelectedImage();
 			mosaicPage = new MosaicUI(PAN_W, PAN_H, srcImage, tileImgs, SCALED_TILE_IMAGE_SIZE);
 			mosaicPage.draw(g2);
+			
+			animation.draw(g2);
 		}
 		else if (page == MOSAIC_UI_EDIT) {
 			mosaicEditPage = new MosaicUI_Edit(PAN_W, PAN_H, mosaicPage.getMosaicImage());
 			mosaicEditPage.draw(g2);
 		}
+		
+		// New UI Test1
+//		g2.drawImage(intro, 0, 0, 1133, 744, null);
+
 	}
-	
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (page == MOSAIC_UI) {
+			if (animationTimer > 0) {
+				animationTimer--;
+			}
+			else {
+				animationTimer = TIME_BETWEEN_FRAMES;
+				animation.changeFrame();
+			}
+		}
+		repaint();
+	}
+		
 	public int getWidth(){
 		if (imagesLoaded) return srcImgs.get(0).getWidth();
 		return -1;
@@ -299,10 +339,21 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		if(imagesLoaded) return srcImgs.get(0).getHeight() + textHeight;
 		return -1;
 	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		repaint();
+	
+	private void addAnimation() {
+		ArrayList<Integer> factors = new ArrayList<Integer>();
+//		1, 2, 4, 5, 8, 10, 16, 20, 32, 40, 64, 80, 128, 160, 256, 320, 640, and 1280 are factors of 1280
+		factors.add(1);
+		factors.add(5);
+		factors.add(16);
+		factors.add(32);
+		factors.add(64);
+		factors.add(128);
+		factors.add(256);
+		factors.add(320);
+		factors.add(640);
+		factors.add(1280);
+		animation = new Animation(introPage.getSelectedImage(), factors, 0, 0, 0.25);
 	}
 	
 // SOURCE for mouse events taken from IAT 265 cafe project by Ivy
@@ -316,6 +367,7 @@ public class MyMouseListener extends MouseAdapter {
 				if (beginButton.contains(eX, eY)) {
 //					System.out.println("begin button clicked");
 					page = MOSAIC_UI;
+					addAnimation();
 				} else if (chooseRandomButton.contains(eX, eY)) {
 //					System.out.println("choose random button clicked");
 				} else if (imgArea1.contains(eX, eY)) {
