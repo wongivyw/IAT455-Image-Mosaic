@@ -120,7 +120,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		stream = null;
 		
 		try {
-			Util.resize("mickey-minnie.jpg", "mickey-minnie.jpg", SCALED_IMAGE_SIZE, SCALED_IMAGE_SIZE);
+			Util.resize("mickey-minnie.jpg", "mickey-minnie-scaled.jpg", SCALED_IMAGE_SIZE, SCALED_IMAGE_SIZE);
 			mickeyMinnie = ImageIO.read(new File("mickey-minnie.jpg")); 
 		} catch (Exception e) {
 			imagesLoaded = false;
@@ -128,7 +128,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		}
 			
 		try {
-			Util.resize("arc-de-triomphe.jpg", "arc-de-triomphe.jpg", SCALED_IMAGE_SIZE, SCALED_IMAGE_SIZE);
+			Util.resize("arc-de-triomphe.jpg", "arc-de-triomphe-scaled.jpg", SCALED_IMAGE_SIZE, SCALED_IMAGE_SIZE);
 			arcDeTriomphe = ImageIO.read(new File("arc-de-triomphe.jpg")); 
 		} catch (Exception e) {
 			imagesLoaded = false;
@@ -136,7 +136,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		}
 			
 		try {
-			Util.resize("parrot.jpg", "parrot.jpg", SCALED_IMAGE_SIZE, SCALED_IMAGE_SIZE);
+			Util.resize("parrot.jpg", "parrot-scaled.jpg", SCALED_IMAGE_SIZE, SCALED_IMAGE_SIZE);
 			parrot = ImageIO.read(new File("parrot.jpg")); 
 		} catch (Exception e) {
 			imagesLoaded = false;
@@ -144,7 +144,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		}
 		
 		try {	
-			Util.resize("stream.jpg", "stream.jpg", SCALED_IMAGE_SIZE, SCALED_IMAGE_SIZE);
+			Util.resize("stream.jpg", "stream-scaled.jpg", SCALED_IMAGE_SIZE, SCALED_IMAGE_SIZE);
 			stream = ImageIO.read(new File("stream.jpg")); 
 		} catch (Exception e) {
 			imagesLoaded = false;
@@ -167,72 +167,72 @@ public class MosaicPanel extends JPanel implements ActionListener {
 	}
 	
 	public boolean loadTileImages() {
-//		String imgPath1 = "tiles/1024x1024-aero-blue-solid-color-background.jpg";
-//		String imgPath2 = "tiles/1024x1024-aero-solid-color-background.jpg";
-//		String imgPath3 = "tiles/1024x1024-african-violet-solid-color-background.jpg";
-//		String imgPath4 = "tiles/1024x1024-air-force-blue-solid-color-background.jpg";
-//		String imgPath5 = "tiles/1024x1024-air-force-dark-blue-solid-color-background.jpg";
-//		String imgPath6 = "tiles/1024x1024-air-superiority-blue-solid-color-background.jpg";
-//		String imgPath7 = "tiles/1024x1024-alabama-crimson-solid-color-background.jpg";
-//		String imgPath8 = "tiles/1024x1024-alice-blue-solid-color-background.jpg";
+//		String imgPath1 = "tiles/1024x1024-aero-blue-solid-color-background.jpg", outputPath1 = "tiles/1024x1024-aero-blue-solid-color-background-scaled.jpg";
+//		String imgPath2 = "tiles/1024x1024-aero-solid-color-background.jpg", outputPath2 = "tiles/1024x1024-aero-solid-color-background-scaled.jpg";
+//		String imgPath3 = "tiles/1024x1024-african-violet-solid-color-background.jpg", outputPath3 = "tiles/1024x1024-african-violet-solid-color-background-scaled.jpg";
+//		String imgPath4 = "tiles/1024x1024-air-force-blue-solid-color-background.jpg", outputPath4 = "tiles/1024x1024-air-force-blue-solid-color-background-scaled.jpg";
+//		String imgPath5 = "tiles/1024x1024-air-force-dark-blue-solid-color-background.jpg", outputPath5 = "tiles/1024x1024-air-force-dark-blue-solid-color-background-scaled.jpg";
+//		String imgPath6 = "tiles/1024x1024-air-superiority-blue-solid-color-background.jpg", outputPath6 = "tiles/1024x1024-air-superiority-blue-solid-color-background-scaled.jpg";
+//		String imgPath7 = "tiles/1024x1024-alabama-crimson-solid-color-background.jpg", outputPath7 = "tiles/1024x1024-alabama-crimson-solid-color-background-scaled.jpg";
+//		String imgPath8 = "tiles/1024x1024-alice-blue-solid-color-background.jpg", outputPath8 = "tiles/1024x1024-alice-blue-solid-color-background-scaled.jpg";
 		
-		String imgPath1 = "originalTiles/t1.jpg";
-		String imgPath2 = "originalTiles/t2.jpg";
-		String imgPath3 = "originalTiles/t3.jpg";
-		String imgPath4 = "originalTiles/t4.jpg";
-		String imgPath5 = "originalTiles/t5.jpg";
-		String imgPath6 = "originalTiles/t6.jpg";
-		String imgPath7 = "originalTiles/t7.jpg";
-		String imgPath8 = "originalTiles/t8.jpg";
-		String imgPath9 = "originalTiles/t9.jpg";
-		String imgPath10 = "originalTiles/t10.jpg";
+		String imgPath1 = "originalTiles/t1.jpg", outputPath1 = "originalTiles/t1-scaled.jpg";
+		String imgPath2 = "originalTiles/t2.jpg", outputPath2 = "originalTiles/t2-scaled.jpg";
+		String imgPath3 = "originalTiles/t3.jpg", outputPath3 = "originalTiles/t3-scaled.jpg";
+		String imgPath4 = "originalTiles/t4.jpg", outputPath4 = "originalTiles/t4-scaled.jpg";
+		String imgPath5 = "originalTiles/t5.jpg", outputPath5 = "originalTiles/t5-scaled.jpg";
+		String imgPath6 = "originalTiles/t6.jpg", outputPath6 = "originalTiles/t6-scaled.jpg";
+		String imgPath7 = "originalTiles/t7.jpg", outputPath7 = "originalTiles/t7-scaled.jpg";
+		String imgPath8 = "originalTiles/t8.jpg", outputPath8 = "originalTiles/t8-scaled.jpg";
+		String imgPath9 = "originalTiles/t9.jpg", outputPath9 = "originalTiles/t9-scaled.jpg";
+		String imgPath10 = "originalTiles/t10.jpg", outputPath10 = "originalTiles/t10-scaled.jpg";
 
-		String imgPath11 = "originalTiles/t11.jpg";
-		String imgPath12 = "originalTiles/t12.jpg";
-		String imgPath13 = "originalTiles/t13.jpg";
-		String imgPath14 = "originalTiles/t14.jpg";
-		String imgPath15 = "originalTiles/t15.jpg";
-		String imgPath16 = "originalTiles/t16.jpg";
-		String imgPath17 = "originalTiles/t17.jpg";
-		String imgPath18 = "originalTiles/t18.jpg";
-		String imgPath19 = "originalTiles/t19.jpg";
+		String imgPath11 = "originalTiles/t11.jpg", outputPath11 = "originalTiles/t11-scaled.jpg";
+		String imgPath12 = "originalTiles/t12.jpg", outputPath12 = "originalTiles/t12-scaled.jpg";
+		String imgPath13 = "originalTiles/t13.jpg", outputPath13 = "originalTiles/t13-scaled.jpg";
+		String imgPath14 = "originalTiles/t14.jpg", outputPath14 = "originalTiles/t14-scaled.jpg";
+		String imgPath15 = "originalTiles/t15.jpg", outputPath15 = "originalTiles/t15-scaled.jpg";
+		String imgPath16 = "originalTiles/t16.jpg", outputPath16 = "originalTiles/t16-scaled.jpg";
+		String imgPath17 = "originalTiles/t17.jpg", outputPath17 = "originalTiles/t17-scaled.jpg";
+		String imgPath18 = "originalTiles/t18.jpg", outputPath18 = "originalTiles/t18-scaled.jpg";
+		String imgPath19 = "originalTiles/t19.jpg", outputPath19 = "originalTiles/t19-scaled.jpg";
+		String imgPath20 = "originalTiles/t20.jpg", outputPath20 = "originalTiles/t20-scaled.jpg";
 
-		String imgPath20 = "originalTiles/t20.jpg";
-		String imgPath21 = "originalTiles/t21.jpg";
-		String imgPath22 = "originalTiles/t22.jpg";
-		String imgPath23 = "originalTiles/t23.jpg";
-		String imgPath24 = "originalTiles/t24.jpg";
-		String imgPath25 = "originalTiles/t25.jpg";
-		String imgPath26 = "originalTiles/t26.jpg";
+		String imgPath21 = "originalTiles/t21.jpg", outputPath21 = "originalTiles/t21-scaled.jpg";
+		String imgPath22 = "originalTiles/t22.jpg", outputPath22 = "originalTiles/t22-scaled.jpg";
+		String imgPath23 = "originalTiles/t23.jpg", outputPath23 = "originalTiles/t23-scaled.jpg";
+		String imgPath24 = "originalTiles/t24.jpg", outputPath24 = "originalTiles/t24-scaled.jpg";
+		String imgPath25 = "originalTiles/t25.jpg", outputPath25 = "originalTiles/t25-scaled.jpg";
+		String imgPath26 = "originalTiles/t26.jpg", outputPath26 = "originalTiles/t26-scaled.jpg";
 		
-		TileImage tile1 = new TileImage(imgPath1, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
-		TileImage tile2 = new TileImage(imgPath2, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
-		TileImage tile3 = new TileImage(imgPath3, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
-		TileImage tile4 = new TileImage(imgPath4, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
-		TileImage tile5 = new TileImage(imgPath5, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
-		TileImage tile6 = new TileImage(imgPath6, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
-		TileImage tile7 = new TileImage(imgPath7, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
-		TileImage tile8 = new TileImage(imgPath8, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
-		TileImage tile9 = new TileImage(imgPath9, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
-		TileImage tile10 = new TileImage(imgPath10, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile1 = new TileImage(imgPath1, outputPath1, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile2 = new TileImage(imgPath2, outputPath2, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile3 = new TileImage(imgPath3, outputPath3, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile4 = new TileImage(imgPath4, outputPath4, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile5 = new TileImage(imgPath5, outputPath5, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile6 = new TileImage(imgPath6, outputPath6, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile7 = new TileImage(imgPath7, outputPath7, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile8 = new TileImage(imgPath8, outputPath8, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile9 = new TileImage(imgPath9, outputPath9, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile10 = new TileImage(imgPath10, outputPath10, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
 		
-		TileImage tile11 = new TileImage(imgPath11, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
-		TileImage tile12 = new TileImage(imgPath12, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
-		TileImage tile13 = new TileImage(imgPath13, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
-		TileImage tile14 = new TileImage(imgPath14, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
-		TileImage tile15 = new TileImage(imgPath15, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
-		TileImage tile16 = new TileImage(imgPath16, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
-		TileImage tile17 = new TileImage(imgPath17, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
-		TileImage tile18 = new TileImage(imgPath18, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
-		TileImage tile19 = new TileImage(imgPath19, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
-		TileImage tile20 = new TileImage(imgPath20, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile11 = new TileImage(imgPath11, outputPath11, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile12 = new TileImage(imgPath12, outputPath12, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile13 = new TileImage(imgPath13, outputPath13, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile14 = new TileImage(imgPath14, outputPath14, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile15 = new TileImage(imgPath15, outputPath15, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile16 = new TileImage(imgPath16, outputPath16, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile17 = new TileImage(imgPath17, outputPath17, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile18 = new TileImage(imgPath18, outputPath18, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile19 = new TileImage(imgPath19, outputPath19, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile20 = new TileImage(imgPath20, outputPath20, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
 		
-		TileImage tile21 = new TileImage(imgPath21, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
-		TileImage tile22 = new TileImage(imgPath22, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
-		TileImage tile23 = new TileImage(imgPath23, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
-		TileImage tile24 = new TileImage(imgPath24, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
-		TileImage tile25 = new TileImage(imgPath25, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
-		TileImage tile26 = new TileImage(imgPath26, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile21 = new TileImage(imgPath21, outputPath21, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile22 = new TileImage(imgPath22, outputPath22, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile23 = new TileImage(imgPath23, outputPath23, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile24 = new TileImage(imgPath24, outputPath24, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile25 = new TileImage(imgPath25, outputPath25, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+		TileImage tile26 = new TileImage(imgPath26, outputPath26, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
 
 		if (tile1.getAverageColor() != null) tileImgs.add(tile1);
 		if (tile2.getAverageColor() != null) tileImgs.add(tile2);

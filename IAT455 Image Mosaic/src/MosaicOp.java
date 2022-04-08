@@ -266,7 +266,6 @@ public class MosaicOp {
 				src.getHeight() != tileSize*Math.sqrt(tiles.size())) 
 			System.out.println("src does not match number of tiles");
 		
-		
 		for (int i = 0; i < tiles.size(); i++) {
 			//get top left location of next tile
 			int row = i/cols; //even division
@@ -278,7 +277,6 @@ public class MosaicOp {
 				for (int k = 0; k < currImg.getHeight(); k++) {
 					int rgb = currImg.getRGB(j, k);
 					result.setRGB(x+j, y+k, rgb);
-					
 				}
 			}
 		}
