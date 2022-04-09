@@ -110,7 +110,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		addMouseMotionListener(mml);
 		
 		if (loadScreenImages()) { //new UI
-			currentScreen = MAIN8;
+			currentScreen = MAIN5;
 			setButtons();
 		}//if
 		
@@ -289,7 +289,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 			break;
 		
 		case MAIN5: //source image with grid
-			BufferedImage grid = operations.addGrid(sourceImage, 120, 5);
+			BufferedImage grid = operations.addGrid(sourceImage, 120, 10);
 			g2.drawImage(grid, 725, 233, SCALED_UI_IMAGE_SIZE, SCALED_UI_IMAGE_SIZE, null);
 			break;
 			

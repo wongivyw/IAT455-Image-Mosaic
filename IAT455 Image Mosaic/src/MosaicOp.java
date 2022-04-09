@@ -349,29 +349,51 @@ public class MosaicOp {
 		}
 		
 		//mark the inner grid lines
-		for (int i = 0; i < numTiles; i++) { //y
-			int posY = (tileSize)*i; //top left corner of tile in y-axis
-			for (int j = 0; j < numTiles; j++) { //x
-				int posX = (tileSize)*j; //top left corner of the tile in x-axis
-				
-				//fill to the right until next tile
-				for (int k = 0; k < tileSize; k++) {
-					//fill stroke weight to the right
-					for (int l = 0; l < strokeWeight; l++) {
-						result.setRGB(posX+k, posY+l, c);
-					}
+		//horizontal grid lines
+		for (int i = 1; i < numTiles; i++) { //y
+			int posY = strokeWeight/2+(tileSize+strokeWeight/2)*i; //top left corner of tile in y-axis
+			for (int j = 0; j < strokeWeight/2; j++) { //thickness of line
+				for (int k = 0; k < w; k++) { //width of image
+					result.setRGB(k, posY+j, c);
+					result.setRGB(k, posY-j, c);
 				}
-				
-				//fill downward until next tile
-				for (int k = 0; k < tileSize; k++) {
-					//fill stroke weight downwards
-					for (int l = 0; l < strokeWeight; l++) {
-						result.setRGB(posX+l, posY+k, c);
-					}
-				}
-				
 			}
 		}
+			
+		//vertical grid lines
+		for (int i = 1; i < numTiles; i++) { //y
+			int posX = strokeWeight/2+(tileSize+strokeWeight/2)*i; //top left corner of tile in x-axis
+			for (int j = 0; j < strokeWeight/2; j++) { //thickness of line
+				for (int k = 0; k < h; k++) { //height of image
+					result.setRGB(posX+j, k, c);
+					result.setRGB(posX-j, k, c);
+				}
+			}
+		}
+
+//		for (int i = 0; i < numTiles; i++) { //y
+//			int posY = (tileSize)*i; //top left corner of tile in y-axis
+//			for (int j = 0; j < numTiles; j++) { //x
+//				int posX = (tileSize)*j; //top left corner of the tile in x-axis
+//				
+//				//fill to the right until next tile
+//				for (int k = 0; k < tileSize; k++) {
+//					//fill stroke weight to the right
+//					for (int l = 0; l < strokeWeight; l++) {
+//						result.setRGB(posX+k, posY+l, c);
+//					}
+//				}
+//				
+//				//fill downward until next tile
+//				for (int k = 0; k < tileSize; k++) {
+//					//fill stroke weight downwards
+//					for (int l = 0; l < strokeWeight; l++) {
+//						result.setRGB(posX+l, posY+k, c);
+//					}
+//				}
+//				
+//			}
+//		}
 		
 		return result;
 	}
