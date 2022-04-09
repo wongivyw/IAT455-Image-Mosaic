@@ -32,21 +32,20 @@ public class Animation {
 	}
 	
 	public void draw(Graphics2D g2) {
-		g2.scale(scale, scale);
-		g2.drawImage(currentFrame, xPos, yPos, w, h, null);
+		g2.drawImage(currentFrame, xPos, yPos, (int)(w*scale), (int)(h*scale), null);
 	}
 	
-	public BufferedImage getNextFrame(int currFrameIndex) {
-		BufferedImage nextFrame;
-		if (currFrameIndex < frames.size()-1) {
-			nextFrame = frames.get(currFrameIndex+1);
-			currentPos++;
-		} else {
-			nextFrame = frames.get(0);
-			currentPos = 0;
-		}
-		return nextFrame;
-	}
+//	public BufferedImage getNextFrame(int currFrameIndex) {
+//		BufferedImage nextFrame;
+//		if (currFrameIndex < frames.size()-1) {
+//			nextFrame = frames.get(currFrameIndex+1);
+//			currentPos++;
+//		} else {
+//			nextFrame = frames.get(0);
+//			currentPos = 0;
+//		}
+//		return nextFrame;
+//	}
 	
 	public void changeFrame() {
 		if (currentPos < frames.size()-1) {

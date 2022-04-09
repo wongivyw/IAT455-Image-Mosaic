@@ -4,6 +4,7 @@
 package src;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.io.File;
@@ -31,7 +32,20 @@ public class TileImage {
 		}
 	}
 	
+	public void draw(Graphics2D g2, int xPos, int yPos) {
+		g2.drawImage(image, xPos, yPos, null);
+	}
+	
+	public void drawBackgroundRemoved(Graphics2D g2, int xPos, int yPos) {
+		g2.drawImage(bkgRemoved, xPos, yPos, null);
+	}
+	
 	public BufferedImage getImage() {
+		return image;
+//		return bkgRemoved;
+	}
+	
+	public BufferedImage getBackgroundRemovedImage() {
 //		return image;
 		return bkgRemoved;
 	}

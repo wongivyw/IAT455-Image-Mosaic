@@ -177,14 +177,6 @@ public class TitleUI {
 		g2.drawString(begin, button1X + buttonWidth/2-begin.length()*4, buttonY + buttonHeight/2 + 6);
 		g2.drawString(random, button2X + buttonWidth/2-random.length()*4-2, buttonY + buttonHeight/2 + 6);
 		
-		//body text - description
-//		int lineHeight = 22;
-//		g2.setColor(MyColors.button);
-//		g2.setFont(new Font("Helvetica", Font.PLAIN, MosaicPanel.FONT_SIZE_BODY));
-//		g2.drawString(desc1, button2X, (int)(80*2.5));
-//		g2.drawString(desc2, button2X, (int)(80*2.5) + lineHeight);
-//		g2.drawString(desc3, button2X, (int)(80*2.5) + lineHeight*2);
-		
 	}
 
 	public Double getBeginButton() {
