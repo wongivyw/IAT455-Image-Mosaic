@@ -15,9 +15,12 @@ public class TileImage {
 	private BufferedImage image, bkgRemoved;
 	private Color avgCol;
 	private String name;
+	private int w, h;
 	
 	public TileImage(String name, String outputName, int w, int h) {
 		this.name = name;
+		this.w = w;
+		this.h = h;
 		try {
 			// scales the image into a square
 			Util.resize(name, outputName, w, h);
@@ -32,12 +35,12 @@ public class TileImage {
 		}
 	}
 	
-	public void draw(Graphics2D g2, int xPos, int yPos) {
-		g2.drawImage(image, xPos, yPos, null);
+	public void draw(Graphics2D g2, int xPos, int yPos, double scale) {
+		g2.drawImage(image, xPos, yPos, (int)(w*scale), (int)(h*scale), null);
 	}
 	
-	public void drawBackgroundRemoved(Graphics2D g2, int xPos, int yPos) {
-		g2.drawImage(bkgRemoved, xPos, yPos, null);
+	public void drawBackgroundRemoved(Graphics2D g2, int xPos, int yPos, double scale) {
+		g2.drawImage(bkgRemoved, xPos, yPos, (int)(w*scale), (int)(h*scale), null);
 	}
 	
 	public BufferedImage getImage() {

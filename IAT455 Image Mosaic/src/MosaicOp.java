@@ -77,10 +77,10 @@ public class MosaicOp {
 	
 
 	//testing without tile images. tile effect on original image
-	private BufferedImage mosaicTest1(BufferedImage src, int tileSize) {
-		BufferedImage result = new BufferedImage(width, height, src.getType());
+	public BufferedImage computeAvgColorInImage(BufferedImage src, int tileSize) {
+		BufferedImage result = new BufferedImage(src.getWidth(), src.getHeight(), src.getType());
 
-		int numTiles = width/tileSize;
+		int numTiles = src.getWidth()/tileSize;
 		
 		int posX, posY;
 		for (int i = 0; i < numTiles; i++) { //y
@@ -88,12 +88,7 @@ public class MosaicOp {
 			for (int j = 0; j < numTiles; j++) { //x
 				//for each tile
 				posX = tileSize*j; //top left corner of the tile in x-axis
-				
-				//TEST 1 -- completed
-//				change the whole tile to the color of pixel in top left corner of tile
-				int rgb = src.getRGB(posX, posY); //color of pixel in top left corner of tile
-				
-				//TEST 2 -- completed
+
 				//find average color in tile and set the tile to that
 				// for loop to iterate through each pixel in tile
 				int red = 0, green = 0, blue = 0;
@@ -107,27 +102,15 @@ public class MosaicOp {
 						green += Util.getGreen(rgba);
 						blue += Util.getBlue(rgba);
 					}
-					
 				}
 				red = Util.clip(red/tileSize);
 				green = Util.clip(green/tileSize);
 				blue = Util.clip(blue/tileSize);
-				int rgba = new Color(red, green, blue).getRGB();	
-				
-//				srcColorAvgs.add(new Color(rgba));
-				
-								
-				/* Algorithm:
-				 * - Reduce source tile to lowest bits
-				 * - Obtain color from the source tile
-				 * - Color match with source tile color to color of tile images
-				 * - Best match = replace source tile with tile image
-				 */
+				int rgba = new Color(red, green, blue).getRGB();					
 				
 				// for loop to iterate through each pixel in tile
 				for (int k = 0; k < tileSize; k++) { //y
 					for (int l = 0; l < tileSize; l++) {//x
-//						result.setRGB(posX+l, posY+k, rgb); // use top left corner in tile
 						result.setRGB(posX+l, posY+k, rgba); // use average color in tile
 					}
 				}
@@ -136,7 +119,7 @@ public class MosaicOp {
 		return result;
 	}
 	
-	private ArrayList<Color> calculateSrcColorAvgs(BufferedImage src, int tileSize) {
+	public ArrayList<Color> calculateSrcColorAvgs(BufferedImage src, int tileSize) {
 		ArrayList<Color> avgCols = new ArrayList<Color>();
 		int numTiles = width/tileSize;
 		
@@ -181,7 +164,7 @@ public class MosaicOp {
 	}
 	
 	// NOT TESTED
-	private ArrayList<TileImage> computeBestMatches(ArrayList<TileImage> tiles, ArrayList<Color> srcColorAverages) {
+	public ArrayList<TileImage> computeBestMatches(ArrayList<TileImage> tiles, ArrayList<Color> srcColorAverages) {
 		
 		//sort tile image averages
 //		ArrayList<TileImage> tilesSorted = sortByAscendingAvgTileColor(tiles);
@@ -253,8 +236,9 @@ public class MosaicOp {
 				second_closestTile=closestTile;
 				second_closestDiff = closestDiff;
 				
-				
+				closestTile = tile;
 				closestDiff = currDiff;
+				
 						
 			}
 		}
@@ -296,7 +280,8 @@ public class MosaicOp {
 	}
 	
 //	SOURCE: https://stackoverflow.com/questions/4593469/java-how-to-convert-rgb-color-to-cie-lab
-//	Goal: to convert rgb to 
+//	Goal: to convert rgb to cie lab color space
+	// NOT USED----
 	public static float[] fromRGB(int r, int g, int b) {
 	    return ColorSpace.getInstance(ColorSpace.CS_CIEXYZ).fromRGB(new float[]{r / 255f, g / 255f, b / 255f});
 	}
@@ -326,6 +311,65 @@ public class MosaicOp {
 					int rgb = currImg.getRGB(j, k);
 					result.setRGB(x+j, y+k, rgb);
 				}
+			}
+		}
+		
+		return result;
+	}
+	
+	// FIX CALCULATION
+	public BufferedImage addGrid(BufferedImage img, int tileSize, int strokeWeight) {
+		int w = img.getWidth();
+		int h = img.getHeight();
+		int c = Color.cyan.getRGB();
+		int numTiles = h/tileSize;
+		BufferedImage result = new BufferedImage(w, h, img.getType());
+		
+		//assign result to original image
+		for (int g = 0; g < w; g++) {
+			for (int f = 0; f < h; f++) {
+				result.setRGB(g, f, img.getRGB(g, f));			
+			}
+		}
+
+		// mark the outer border of image
+		//top + bottom
+		for (int i = 0; i < w; i++) {
+			for (int j = 0; j < strokeWeight; j++) {
+				result.setRGB(i, j, c); //top
+				result.setRGB(i, h-j-1, c);	//bottom			
+			}
+		}
+		// left + right
+		for (int i = 0; i < h; i++) {
+			for (int j = 0; j < strokeWeight; j++) {
+				result.setRGB(j, i, c); //left
+				result.setRGB(w-j-1, i, c);	//right		
+			}
+		}
+		
+		//mark the inner grid lines
+		for (int i = 0; i < numTiles; i++) { //y
+			int posY = (tileSize)*i; //top left corner of tile in y-axis
+			for (int j = 0; j < numTiles; j++) { //x
+				int posX = (tileSize)*j; //top left corner of the tile in x-axis
+				
+				//fill to the right until next tile
+				for (int k = 0; k < tileSize; k++) {
+					//fill stroke weight to the right
+					for (int l = 0; l < strokeWeight; l++) {
+						result.setRGB(posX+k, posY+l, c);
+					}
+				}
+				
+				//fill downward until next tile
+				for (int k = 0; k < tileSize; k++) {
+					//fill stroke weight downwards
+					for (int l = 0; l < strokeWeight; l++) {
+						result.setRGB(posX+l, posY+k, c);
+					}
+				}
+				
 			}
 		}
 		

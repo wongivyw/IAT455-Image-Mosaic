@@ -96,6 +96,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 	BufferedImage sourceImage;
 	TileImage tileImage;
 	MosaicOp operations;
+	int userChosenTileSize;
 		
 	public MosaicPanel() {
 		//UNCOMMENT TO DRAW APPLICATION (COMMENTED OUT DURING TESTING)
@@ -109,7 +110,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		addMouseMotionListener(mml);
 		
 		if (loadScreenImages()) { //new UI
-			currentScreen = 0;
+			currentScreen = MAIN8;
 			setButtons();
 		}//if
 		
@@ -122,6 +123,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		timer = new Timer(30, this);
 		timer.start();
 		animationTimer = TIME_BETWEEN_FRAMES;
+		userChosenTileSize = 60; //will change based on what the user chooses, this is the default
 	}
 	
 	//methods to load images from file. returns false if error occurs
@@ -270,41 +272,72 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		case INTRO3:
 			break;
 			
-		case MAIN1:
-			if (tileImage != null) tileImage.draw(g2, 725, 233);
+		case MAIN1: //tile image
+			if (tileImage != null) tileImage.draw(g2, 725, 233, 1);
 			break;
 		
-		case MAIN2:
-			if (tileImage != null) tileImage.drawBackgroundRemoved(g2, 725, 233);
+		case MAIN2: //tile image with removed background
+			if (tileImage != null) tileImage.drawBackgroundRemoved(g2, 725, 233, 1);
 			break;
 			
-		case MAIN3:
+		case MAIN3: //animation
 			animation.draw(g2);
 			break;
 			
-		case MAIN4:
+		case MAIN4: //source image
 			if (sourceImage != null) g2.drawImage(sourceImage, 725, 233, SCALED_UI_IMAGE_SIZE, SCALED_UI_IMAGE_SIZE, null);
 			break;
 		
-		case MAIN5:
+		case MAIN5: //source image with grid
+			BufferedImage grid = operations.addGrid(sourceImage, 120, 5);
+			g2.drawImage(grid, 725, 233, SCALED_UI_IMAGE_SIZE, SCALED_UI_IMAGE_SIZE, null);
 			break;
 			
-		case MAIN6:
+		case MAIN6: //source avg colors + tile avg colors
+			if (sourceImage != null && tileImage != null) {
+				//draw source image
+				g2.drawImage(sourceImage, 700, 160, SCALED_UI_IMAGE_SIZE/2, SCALED_UI_IMAGE_SIZE/2, null);
+				//draw tile image
+				tileImage.drawBackgroundRemoved(g2, 700, 350, 0.5);
+				
+				// draw avg color image of source image
+				BufferedImage srcImg_avgColors = operations.computeAvgColorInImage(sourceImage, userChosenTileSize);
+				g2.drawImage(srcImg_avgColors, 875, 160, SCALED_UI_IMAGE_SIZE/2, SCALED_UI_IMAGE_SIZE/2, null);
+				
+				// draw avg color image of tile image
+				BufferedImage bkgRm = tileImage.getBackgroundRemovedImage();
+				BufferedImage tileImg_avgColors = operations.computeAvgColorInImage(bkgRm, bkgRm.getHeight());
+				g2.drawImage(tileImg_avgColors, 875, 350, SCALED_UI_IMAGE_SIZE/2, SCALED_UI_IMAGE_SIZE/2, null);
+				
+			}
 			break;
 			
-		case MAIN7:
+		case MAIN7: //source image + reordered tiles
+			//draw source image
+			g2.drawImage(sourceImage, 700, 160, SCALED_UI_IMAGE_SIZE/2, SCALED_UI_IMAGE_SIZE/2, null);
+			
+			//draw reordered tiles
+			ArrayList<Color> srcColorAvgs = operations.calculateSrcColorAvgs(sourceImage, userChosenTileSize);
+			ArrayList<TileImage> orderedTiles = operations.computeBestMatches(tileImgs, srcColorAvgs);
+			drawFromTileArray(g2, orderedTiles, 25, 5, 60, 60, 860, 160);
 			break;
 		
-		case MAIN8:
+		case MAIN8: //final mosaic image
 			BufferedImage mosaicImage = operations.getMosaicImage();
 			if (mosaicImage != null) g2.drawImage(mosaicImage, 725, 233, SCALED_UI_IMAGE_SIZE, SCALED_UI_IMAGE_SIZE, null);
-
 			break;
 			
 		default:
 			break;
 		}
 
+	}
+
+	//NOT COMPLETE
+	private void drawFromTileArray(Graphics2D g2, ArrayList<TileImage> orderedTiles, int numTiles, int numCols, int tileW,
+			int tileH, int xPos, int yPos) {
+//		for (int i = 0; i <)
+		g2.drawImage(orderedTiles.get(0).getBackgroundRemovedImage(), xPos, yPos, tileW, tileH, null);
 	}
 
 	@Override
