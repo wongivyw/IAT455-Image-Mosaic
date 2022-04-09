@@ -26,7 +26,7 @@ import javax.swing.Timer;
 import src.Animation;
 import src.MosaicOp;
 import src.MyColors;
-//import src.Screen;
+import src.Screen;
 import src.TileImage;
 import src.Util;
 
@@ -86,7 +86,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 	private static final int MAIN8 = 10;
 	
 	
-//	ArrayList<Screen> screens = new ArrayList<Screen>();
+	ArrayList<Screen> screens = new ArrayList<Screen>();
 	int currentScreen;
 	
 	private Timer timer;
@@ -136,20 +136,20 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		int numIntros = 3;
 		int numMains = 8;
 		
-//		for (int i = 0; i < numIntros; i++) {
-//			String inputPath = folder.concat(intro).concat(Integer.toString(i+1)).concat(format);
-//			Screen screen = new Screen(inputPath, PAN_W, PAN_H);
-//			if (screen.isSuccessful()) screens.add(screen);
-//		}
-//		
-//		for (int i = 0; i < numMains; i++) {
-//			String inputPath = folder.concat(main).concat(Integer.toString(i+1)).concat(format);
-//			Screen screen = new Screen(inputPath, PAN_W, PAN_H);
-//			if (screen.isSuccessful()) screens.add(screen);
-//		}
-//
-//		if (screens.size() == (numIntros + numMains)) return true;
-//		System.out.println("screen images cannot be loaded");
+		for (int i = 0; i < numIntros; i++) {
+			String inputPath = folder.concat(intro).concat(Integer.toString(i+1)).concat(format);
+			Screen screen = new Screen(inputPath, PAN_W, PAN_H);
+			if (screen.isSuccessful()) screens.add(screen);
+		}
+		
+		for (int i = 0; i < numMains; i++) {
+			String inputPath = folder.concat(main).concat(Integer.toString(i+1)).concat(format);
+			Screen screen = new Screen(inputPath, PAN_W, PAN_H);
+			if (screen.isSuccessful()) screens.add(screen);
+		}
+
+		if (screens.size() == (numIntros + numMains)) return true;
+		System.out.println("screen images cannot be loaded");
 		return false;
 		
 	}
@@ -245,9 +245,9 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
 		// draw screen image
-//		if (screens != null && !screens.isEmpty()) {
-//			screens.get(currentScreen).draw(g2);
-//		}
+		if (screens != null && !screens.isEmpty()) {
+			screens.get(currentScreen).draw(g2);
+		}
 		
 		/*
 		 * main1 = tile image							--ADDED
@@ -345,17 +345,17 @@ public class MosaicPanel extends JPanel implements ActionListener {
 	private void setButtons() {
 //		addButtonArea(xpos, ypos, width, height)
 		int xPos = 141;
-//		screens.get(INTRO1).addButtonArea(141, 452, 123, 43);
-//		screens.get(INTRO2).addButtonArea(141, 452, 123, 43);
-//		screens.get(INTRO3).addButtonArea(141, 452, 123, 43);
-//		screens.get(MAIN1).addButtonArea(141, 452, 123, 43);
-//		screens.get(MAIN2).addButtonArea(141, 452, 123, 43);
-//		screens.get(MAIN3).addButtonArea(141, 452, 123, 43);
-//		screens.get(MAIN4).addButtonArea(141, 452, 123, 43);
-//		screens.get(MAIN5).addButtonArea(141, 452, 123, 43);
-//		screens.get(MAIN6).addButtonArea(141, 452, 123, 43);
-//		screens.get(MAIN7).addButtonArea(141, 452, 123, 43);
-//		screens.get(MAIN8).addButtonArea(141, 452, 123, 43);
+		screens.get(INTRO1).addButtonArea(141, 452, 123, 43);
+		screens.get(INTRO2).addButtonArea(141, 452, 123, 43);
+		screens.get(INTRO3).addButtonArea(141, 452, 123, 43);
+		screens.get(MAIN1).addButtonArea(141, 452, 123, 43);
+		screens.get(MAIN2).addButtonArea(141, 452, 123, 43);
+		screens.get(MAIN3).addButtonArea(141, 452, 123, 43);
+		screens.get(MAIN4).addButtonArea(141, 452, 123, 43);
+		screens.get(MAIN5).addButtonArea(141, 452, 123, 43);
+		screens.get(MAIN6).addButtonArea(141, 452, 123, 43);
+		screens.get(MAIN7).addButtonArea(141, 452, 123, 43);
+		screens.get(MAIN8).addButtonArea(141, 452, 123, 43);
 
 	}
 	
@@ -367,7 +367,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 			int eY = e.getY();
 
 			// go to next screen if button on current screen is clicked
-//			if (screens.get(currentScreen).isButtonClicked(eX, eY)) nextScreen();
+			if (screens.get(currentScreen).isButtonClicked(eX, eY)) nextScreen();
 			if (currentScreen == MAIN3) addAnimation();
 			
 			//handles double click events
