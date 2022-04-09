@@ -32,8 +32,8 @@ public class TileImage {
 	}
 	
 	public BufferedImage getImage() {
-		return image;
-//		return bkgRemoved;
+//		return image;
+		return bkgRemoved;
 	}
 	
 	public Color getAverageColor() {
@@ -159,7 +159,7 @@ public class TileImage {
     private BufferedImage removeBackground(BufferedImage src1, BufferedImage matteImage) {
     	WritableRaster wRaster = src1.copyData(null);
 		BufferedImage compositeImage = new BufferedImage(src1.getColorModel(), wRaster, src1.isAlphaPremultiplied(), null);
-//		O = (A x M) + [(1 – M) x B]
+//		O = (A x M) + [(1 ï¿½ M) x B]
 //		image 1 is the foreground, image 2 is the background using matteImage
 		
         int width = src1.getWidth();

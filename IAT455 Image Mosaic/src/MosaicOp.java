@@ -187,31 +187,79 @@ public class MosaicOp {
 //		ArrayList<TileImage> tilesSorted = sortByAscendingAvgTileColor(tiles);
 		
 		ArrayList<TileImage> finalTiles = new ArrayList<TileImage>();
-		for (Color avgC : srcColorAverages) {
+		int rows = (int)Math.sqrt(srcColorAverages.size());
+		int cols = rows;
+//		for (Color avgC : srcColorAverages) {
+			for (int i=0; i<srcColorAverages.size();i++) {
 			//for each average in src tile...
-			TileImage bestTile = findBestColorMatch(avgC, tiles);
-			if (bestTile != null) finalTiles.add(bestTile);
+			Color avgC=srcColorAverages.get(i);
+			TileImage selectedTile;
+			TileImage bestTile = findBestColorMatch(avgC, tiles)[0];
+			TileImage second_bestTile = findBestColorMatch(avgC, tiles)[1];
+			TileImage third_bestTile = findBestColorMatch(avgC, tiles)[2];
+			
+			boolean closest_equal_to_top=i>cols && finalTiles.get(i-1) !=null &&(finalTiles.get(i-cols) == bestTile);
+			boolean closest_equal_to_left=i>0 && finalTiles.get(i-1) !=null &&(finalTiles.get(i-1) == bestTile);
+//			boolean closest_equal_to_top_left=i>0 && j>0 && (reordered_tiles[i - 1][j-1] == closest);
+//			
+			
+			boolean second_closest_equal_to_top=i>cols && finalTiles.get(i-1) !=null &&(finalTiles.get(i-cols) == second_bestTile);
+			boolean second_closest_equal_to_left=i>0 && finalTiles.get(i-1) !=null &&(finalTiles.get(i-1) == second_bestTile);
+			
+			if(closest_equal_to_top || closest_equal_to_left ) {
+//				if (second_closest_equal_to_top || second_closest_equal_to_left ||second_closest_equal_to_top_left ) {
+//					reordered_tiles[i][j] = third_closest;
+//				}
+				if (second_closest_equal_to_top || second_closest_equal_to_left ) {
+					selectedTile = third_bestTile;
+				}
+				else selectedTile = second_bestTile;;
+				
+			}
+			else selectedTile = bestTile;
+		
+		
+			if (selectedTile != null) finalTiles.add(selectedTile);
 		}
+		/*finalTiles is the reordered tiles 
+		 * bestTile is the closest
+		 * 
+		 * */
+			
+			System.out.println(finalTiles.size());
 
 		return finalTiles;
 	}
 	
 	//NOT TESTED
 	// given a color and array of TileImages, returns the TileImage whose avg color is closes to the given color
-	private TileImage findBestColorMatch(Color srcCol, ArrayList<TileImage> imgs) {
+	private TileImage[] findBestColorMatch(Color srcCol, ArrayList<TileImage> imgs) {
 		if (imgs == null || imgs.isEmpty()) return null;
-		int diff = getColorDifference(srcCol, imgs.get(0).getAverageColor());
-		TileImage closestTile = imgs.get(0);
+		
+//		TileImage closestTile = imgs.get(0);
+		TileImage closestTile, second_closestTile, third_closestTile;
+		
+		closestTile=second_closestTile= third_closestTile= imgs.get(0);
+		int closestDiff, second_closestDiff, third_closestDiff;
+		closestDiff= second_closestDiff= third_closestDiff= getColorDifference(srcCol, imgs.get(0).getAverageColor());
 		
 		for (TileImage tile : imgs) {
 			Color tileCol = tile.getAverageColor();
 			int currDiff = getColorDifference(srcCol, tileCol);
-			if (currDiff < diff) {
-				diff = currDiff;
-				closestTile = tile;				
+			if (currDiff <  closestDiff) {
+				third_closestTile=second_closestTile;
+				third_closestDiff = second_closestDiff;
+				
+				second_closestTile=closestTile;
+				second_closestDiff = closestDiff;
+				
+				
+				closestDiff = currDiff;
+						
 			}
 		}
-		return closestTile;
+		TileImage[] closestTiles= {closestTile,second_closestTile,third_closestTile};
+		return closestTiles;
 	}
 	
 	//NOT TESTED

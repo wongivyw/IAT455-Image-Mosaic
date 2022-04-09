@@ -57,7 +57,7 @@ public class MosaicUI {
 		oCard = new Rectangle2D.Double(oImageX-10, oImageY-10, oImageSize+20, oImageSize+20);
 
 		//mosaic image
-		mImageSize = 300;
+		mImageSize = 600;
 		mImageX = width/2;
 		mImageY = 180;
 		//mosaic image card
