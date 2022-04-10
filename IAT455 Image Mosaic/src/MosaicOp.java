@@ -77,7 +77,7 @@ public class MosaicOp {
 	
 
 	//testing without tile images. tile effect on original image
-	public BufferedImage computeAvgColorInImage(BufferedImage src, int tileSize) {
+	public BufferedImage computeAvgColorInImage(BufferedImage src, int tileSize, boolean includeBlack) {
 		BufferedImage result = new BufferedImage(src.getWidth(), src.getHeight(), src.getType());
 
 		int numTiles = src.getWidth()/tileSize;
@@ -88,26 +88,57 @@ public class MosaicOp {
 			for (int j = 0; j < numTiles; j++) { //x
 				//for each tile
 				posX = tileSize*j; //top left corner of the tile in x-axis
-
-				//find average color in tile and set the tile to that
-				// for loop to iterate through each pixel in tile
 				int red = 0, green = 0, blue = 0;
-				for (int k = 0; k < tileSize; k++) { //y
-					red=0;
-					green=0;
-					blue=0;
-					for (int l = 0; l < tileSize; l++) {//x
-						int rgba = src.getRGB(posX+l, posY+k);
-						red += Util.getRed(rgba);
-						green += Util.getGreen(rgba);
-						blue += Util.getBlue(rgba);
+
+				if (includeBlack) { // include black pixels in average calculation
+					//find average color in tile and set the tile to that
+					// for loop to iterate through each pixel in tile
+					for (int k = 0; k < tileSize; k++) { //y
+						red=0;
+						green=0;
+						blue=0;
+						for (int l = 0; l < tileSize; l++) {//x
+							int rgba = src.getRGB(posX+l, posY+k);
+							red += Util.getRed(rgba);
+							green += Util.getGreen(rgba);
+							blue += Util.getBlue(rgba);
+						}
 					}
+					red = Util.clip(red/tileSize);
+					green = Util.clip(green/tileSize);
+					blue = Util.clip(blue/tileSize);
+				} else { // do not include black pixels in calculation
+					
+					int count = 0;
+					for (int k = 0; k < tileSize; k++) { //y
+						count=0;
+						red=0;
+						green=0;
+						blue=0;
+						for (int l = 0; l < tileSize; l++) {//x
+							int rgba = src.getRGB(posX+l, posY+k);
+							int r = Util.getRed(rgba);
+							int g = Util.getGreen(rgba);
+							int b = Util.getBlue(rgba);
+							
+							if (rgba != Color.black.getRGB() &&
+									rgba != Color.black.getRGB() &&
+									!(r==0 && g==0 && b==0)) {
+								red += r;
+								green += g;
+								blue += b;
+								count++;
+							} //else {
+//								System.out.println("Found black pixel!");
+//							}
+						}
+					}
+					red = Util.clip(red/count);
+					green = Util.clip(green/count);
+					blue = Util.clip(blue/count);	
 				}
-				red = Util.clip(red/tileSize);
-				green = Util.clip(green/tileSize);
-				blue = Util.clip(blue/tileSize);
-				int rgba = new Color(red, green, blue).getRGB();					
 				
+				int rgba = new Color(red, green, blue).getRGB();	
 				// for loop to iterate through each pixel in tile
 				for (int k = 0; k < tileSize; k++) { //y
 					for (int l = 0; l < tileSize; l++) {//x
@@ -159,6 +190,7 @@ public class MosaicOp {
 		if (imgs.isEmpty()) return null;
 		for (TileImage i : imgs) {
 			res.add(i.getAverageColor());
+//			res.add(i.getAverageColorOfBkgRemoved());
 		}
 		return res;
 	}
@@ -209,7 +241,7 @@ public class MosaicOp {
 		 * 
 		 * */
 			
-			System.out.println(finalTiles.size());
+//			System.out.println("Num final tiles " + finalTiles.size());
 
 		return finalTiles;
 	}
@@ -317,7 +349,7 @@ public class MosaicOp {
 		return result;
 	}
 	
-	// FIX CALCULATION
+	
 	public BufferedImage addGrid(BufferedImage img, int tileSize, int strokeWeight) {
 		int w = img.getWidth();
 		int h = img.getHeight();
@@ -370,30 +402,6 @@ public class MosaicOp {
 				}
 			}
 		}
-
-//		for (int i = 0; i < numTiles; i++) { //y
-//			int posY = (tileSize)*i; //top left corner of tile in y-axis
-//			for (int j = 0; j < numTiles; j++) { //x
-//				int posX = (tileSize)*j; //top left corner of the tile in x-axis
-//				
-//				//fill to the right until next tile
-//				for (int k = 0; k < tileSize; k++) {
-//					//fill stroke weight to the right
-//					for (int l = 0; l < strokeWeight; l++) {
-//						result.setRGB(posX+k, posY+l, c);
-//					}
-//				}
-//				
-//				//fill downward until next tile
-//				for (int k = 0; k < tileSize; k++) {
-//					//fill stroke weight downwards
-//					for (int l = 0; l < strokeWeight; l++) {
-//						result.setRGB(posX+l, posY+k, c);
-//					}
-//				}
-//				
-//			}
-//		}
 		
 		return result;
 	}

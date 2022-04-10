@@ -13,12 +13,12 @@ import javax.imageio.ImageIO;
 
 public class TileImage {
 	private BufferedImage image, bkgRemoved;
-	private Color avgCol;
+	private Color avgCol, avgColofBkgRemmoved;
 	private String name;
 	private int w, h;
 	
 	public TileImage(String name, String outputName, int w, int h) {
-		this.name = name;
+		this.name = name; //or outputName
 		this.w = w;
 		this.h = h;
 		try {
@@ -26,12 +26,13 @@ public class TileImage {
 			Util.resize(name, outputName, w, h);
 			image = ImageIO.read(new File(outputName)); // original image
 			avgCol = computeAverageColor(); //do this on original image
+			avgColofBkgRemmoved = computeAverageColorIgnoreBlack(); // do this to background removed img
 			
 			bkgRemoved = getBackgroundRemoved(); //remove background on image
 //			avgCol = computeAverageColorIgnoreBlack(); // do this on background removed image
 			
 		} catch (Exception e) {
-			System.out.println("Cannot load the provided image: " + name);
+			System.out.println("Cannot load the provided image: " + outputName);
 		}
 	}
 	
@@ -55,6 +56,10 @@ public class TileImage {
 	
 	public Color getAverageColor() {
 		return avgCol;
+	}
+	
+	public Color getAverageColorOfBkgRemoved() {
+		return avgColofBkgRemmoved;
 	}
 	
 	private Color computeAverageColor() {
@@ -99,7 +104,6 @@ public class TileImage {
 					count++;
 				}
 			}
-//			numPixelsInImage = bkgRemoved.getWidth() * bkgRemoved.getHeight();
 		}
 			
 		//take the average of the sum of rgb channels

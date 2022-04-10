@@ -47,7 +47,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 //	public final static int MOSAIC_UI_EDIT = 2;
 	
 	public final static int SCALED_IMAGE_SIZE = 1280;
-	public final static int SCALED_TILE_IMAGE_SIZE = 40;
+	public final static int SCALED_TILE_IMAGE_SIZE = 2;
 	public final static int SCALED_UI_IMAGE_SIZE = 300;
 
 //	 * 1280 is divisible by are 1, 2, 4, 5, 8, 10, 16, 20, 32, 40, 64, 80, 128, 160, 256, 320, 640, and 1280.
@@ -110,7 +110,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		addMouseMotionListener(mml);
 		
 		if (loadScreenImages()) { //new UI
-			currentScreen = MAIN5;
+			currentScreen = MAIN6;
 			setButtons();
 		}//if
 		
@@ -214,23 +214,23 @@ public class MosaicPanel extends JPanel implements ActionListener {
 	
 	public boolean loadTileImages() {	
 		String format = ".jpg";
-		String folder = "originalTiles/";
-		String name = "t";
+		String folder = "tiles/";
+		String name = "tile-";
 		
-		int numImages = 26;
+		int numImages = 47; // 0 to 46
 		
 		for (int i = 0; i < numImages; i++) {
-			String inputPath = folder.concat(name).concat(Integer.toString(i+1)).concat(format);
-			String outputPath = folder.concat(name).concat(Integer.toString(i+1)).concat("-scaled").concat(format);
-			System.out.println(inputPath);
-			System.out.println(outputPath);
+			String inputPath = folder.concat(name).concat(Integer.toString(i)).concat(format);
+			String outputPath = folder.concat(name).concat(Integer.toString(i)).concat("-scaled").concat(format);
+//			System.out.println(inputPath);
+//			System.out.println(outputPath);
 			TileImage tile = new TileImage(inputPath, outputPath, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
 			if (tile.getAverageColor() != null) tileImgs.add(tile);
 		}
 		
 		//load larger tile image to be displayed to user
-		String pathIn = folder.concat(name).concat("1").concat(format);
-		String pathOut = folder.concat(name).concat("1").concat("-scaled2").concat(format);
+		String pathIn = folder.concat(name).concat("41").concat(format);
+		String pathOut = folder.concat(name).concat("41").concat("-scaled2").concat(format);
 		tileImage = new TileImage(pathIn, pathOut, SCALED_UI_IMAGE_SIZE, SCALED_UI_IMAGE_SIZE);
 
 
@@ -301,12 +301,12 @@ public class MosaicPanel extends JPanel implements ActionListener {
 				tileImage.drawBackgroundRemoved(g2, 700, 350, 0.5);
 				
 				// draw avg color image of source image
-				BufferedImage srcImg_avgColors = operations.computeAvgColorInImage(sourceImage, userChosenTileSize);
+				BufferedImage srcImg_avgColors = operations.computeAvgColorInImage(sourceImage, userChosenTileSize, true);
 				g2.drawImage(srcImg_avgColors, 875, 160, SCALED_UI_IMAGE_SIZE/2, SCALED_UI_IMAGE_SIZE/2, null);
 				
 				// draw avg color image of tile image
 				BufferedImage bkgRm = tileImage.getBackgroundRemovedImage();
-				BufferedImage tileImg_avgColors = operations.computeAvgColorInImage(bkgRm, bkgRm.getHeight());
+				BufferedImage tileImg_avgColors = operations.computeAvgColorInImage(bkgRm, bkgRm.getHeight(), false);
 				g2.drawImage(tileImg_avgColors, 875, 350, SCALED_UI_IMAGE_SIZE/2, SCALED_UI_IMAGE_SIZE/2, null);
 				
 			}
