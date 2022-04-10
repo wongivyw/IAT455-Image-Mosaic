@@ -50,7 +50,11 @@ public class MosaicPanel extends JPanel implements ActionListener {
 	public final static int SCALED_TILE_IMAGE_SIZE = 2;
 	public final static int SCALED_UI_IMAGE_SIZE = 300;
 
-//	 * 1280 is divisible by are 1, 2, 4, 5, 8, 10, 16, 20, 32, 40, 64, 80, 128, 160, 256, 320, 640, and 1280.
+//	 * 1280 is divisible by are 
+//	small: 1, 2, 4, 5, 
+//	medium: 8, 10, 16, 20, 32, 
+//	large: 40, 64, 
+//	extra large: 80, 128, 160, 256, 320, 640, and 1280.
 
 	public final static int TIME_BETWEEN_FRAMES = 5; // 5/30 of a second
 
@@ -110,7 +114,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		addMouseMotionListener(mml);
 		
 		if (loadScreenImages()) { //new UI
-			currentScreen = MAIN6;
+			currentScreen = MAIN4;
 			setButtons();
 		}//if
 		
@@ -258,7 +262,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		 * main4 = source image							--ADDED
 		 * main5 = source image with grid
 		 * main6 = source avg colors + tile avg colors
-		 * main7 = source image + reordered tiles
+		 * main7 = source image + reordered tiles		--ADDED
 		 * main8 = final mosaic image					--ADDED
 		 */
 		// add elements onto screen to show process
@@ -269,7 +273,13 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		case INTRO2:
 			break;
 			
-		case INTRO3:
+		case INTRO3: //draw first 16 tiles images in 4x4 grid
+			//draw reordered tiles
+//			ArrayList<Color> srcColorAvgs = operations.calculateSrcColorAvgs(sourceImage, userChosenTileSize);
+//			ArrayList<TileImage> orderedTiles = operations.computeBestMatches(tileImgs, srcColorAvgs);
+			drawFromTileArray(g2, tileImgs, 16, 4, 65, 65, 750, 280);
+			
+			
 			break;
 			
 		case MAIN1: //tile image
@@ -289,8 +299,12 @@ public class MosaicPanel extends JPanel implements ActionListener {
 			break;
 		
 		case MAIN5: //source image with grid
-			BufferedImage grid = operations.addGrid(sourceImage, 120, 10);
-			g2.drawImage(grid, 725, 233, SCALED_UI_IMAGE_SIZE, SCALED_UI_IMAGE_SIZE, null);
+//			 1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 25, 30, 50, 60, 75, 100, 150, and 300.
+			BufferedImage gridS = operations.smallGrid(sourceImage); //300px total
+			BufferedImage gridM = operations.addGrid(sourceImage, 50, 7); //300px total
+			BufferedImage gridL = operations.addGrid(sourceImage, 100, 10); //300px total
+			BufferedImage gridXL = operations.addGrid(sourceImage, 150, 15); //300px total
+			g2.drawImage(gridM, 725, 233, SCALED_UI_IMAGE_SIZE, SCALED_UI_IMAGE_SIZE, null);
 			break;
 			
 		case MAIN6: //source avg colors + tile avg colors
@@ -314,12 +328,12 @@ public class MosaicPanel extends JPanel implements ActionListener {
 			
 		case MAIN7: //source image + reordered tiles
 			//draw source image
-			g2.drawImage(sourceImage, 700, 160, SCALED_UI_IMAGE_SIZE/2, SCALED_UI_IMAGE_SIZE/2, null);
+			g2.drawImage(sourceImage, 650, 250, SCALED_UI_IMAGE_SIZE/4*3, SCALED_UI_IMAGE_SIZE/4*3, null);
 			
 			//draw reordered tiles
 			ArrayList<Color> srcColorAvgs = operations.calculateSrcColorAvgs(sourceImage, userChosenTileSize);
 			ArrayList<TileImage> orderedTiles = operations.computeBestMatches(tileImgs, srcColorAvgs);
-			drawFromTileArray(g2, orderedTiles, 25, 5, 60, 60, 860, 160);
+			drawFromTileArray(g2, orderedTiles, 20, 20, 30, 30, 450, 500);
 			break;
 		
 		case MAIN8: //final mosaic image
@@ -333,11 +347,15 @@ public class MosaicPanel extends JPanel implements ActionListener {
 
 	}
 
-	//NOT COMPLETE
 	private void drawFromTileArray(Graphics2D g2, ArrayList<TileImage> orderedTiles, int numTiles, int numCols, int tileW,
-			int tileH, int xPos, int yPos) {
-//		for (int i = 0; i <)
-		g2.drawImage(orderedTiles.get(0).getBackgroundRemovedImage(), xPos, yPos, tileW, tileH, null);
+		int tileH, int xPos, int yPos) {
+		for (int i = 0; i < numTiles; i++) {
+			int col = i%numCols;
+			int row = i/numCols;
+			BufferedImage ti = orderedTiles.get(i).getFullSizeImage();
+			g2.drawImage(ti, xPos+col*tileW, yPos+row*tileH, tileW, tileH, null);
+	
+		}
 	}
 
 	@Override

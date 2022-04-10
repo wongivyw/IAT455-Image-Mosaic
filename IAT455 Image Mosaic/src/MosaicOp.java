@@ -382,7 +382,7 @@ public class MosaicOp {
 		
 		//mark the inner grid lines
 		//horizontal grid lines
-		for (int i = 1; i < numTiles; i++) { //y
+		for (int i = 1; i < numTiles-1; i++) { //y
 			int posY = strokeWeight/2+(tileSize+strokeWeight/2)*i; //top left corner of tile in y-axis
 			for (int j = 0; j < strokeWeight/2; j++) { //thickness of line
 				for (int k = 0; k < w; k++) { //width of image
@@ -393,7 +393,7 @@ public class MosaicOp {
 		}
 			
 		//vertical grid lines
-		for (int i = 1; i < numTiles; i++) { //y
+		for (int i = 1; i < numTiles-1; i++) { //y
 			int posX = strokeWeight/2+(tileSize+strokeWeight/2)*i; //top left corner of tile in x-axis
 			for (int j = 0; j < strokeWeight/2; j++) { //thickness of line
 				for (int k = 0; k < h; k++) { //height of image
@@ -401,6 +401,25 @@ public class MosaicOp {
 					result.setRGB(posX-j, k, c);
 				}
 			}
+		}
+		
+		return result;
+	}
+	
+	public BufferedImage smallGrid(BufferedImage img) {
+		int w = img.getWidth();
+		int h = img.getHeight();
+		BufferedImage result = new BufferedImage(w, h, img.getType());
+//		The prime numbers from 1 to 100 are: 2, 3, 5, 7, 11, 13, 17, 19,
+//		23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97.
+		for (int x = 0; x < w; x++) {
+			for (int y = 0; y < h; y++) {
+				if (x%17 == 0 || y%17 == 0) {
+					result.setRGB(x, y, Color.cyan.getRGB());
+				} else {
+					result.setRGB(x, y, img.getRGB(x, y));
+				}
+			}			
 		}
 		
 		return result;

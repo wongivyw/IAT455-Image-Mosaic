@@ -12,7 +12,7 @@ import java.io.File;
 import javax.imageio.ImageIO;
 
 public class TileImage {
-	private BufferedImage image, bkgRemoved;
+	private BufferedImage fullSizeImage, image, bkgRemoved;
 	private Color avgCol, avgColofBkgRemmoved;
 	private String name;
 	private int w, h;
@@ -23,6 +23,7 @@ public class TileImage {
 		this.h = h;
 		try {
 			// scales the image into a square
+			fullSizeImage = ImageIO.read(new File(name)); // full size image
 			Util.resize(name, outputName, w, h);
 			image = ImageIO.read(new File(outputName)); // original image
 			avgCol = computeAverageColor(); //do this on original image
@@ -46,11 +47,13 @@ public class TileImage {
 	
 	public BufferedImage getImage() {
 		return image;
-//		return bkgRemoved;
+	}
+	
+	public BufferedImage getFullSizeImage() {
+		return fullSizeImage;
 	}
 	
 	public BufferedImage getBackgroundRemovedImage() {
-//		return image;
 		return bkgRemoved;
 	}
 	
@@ -121,9 +124,8 @@ public class TileImage {
 	
 	//SOURCE: IAT 455 Assignment 1 by Ivy Wong
     private BufferedImage matteImage (BufferedImage src1) {
-    	WritableRaster wRaster = src1.copyData(null);
-		BufferedImage matteImage = new BufferedImage(src1.getColorModel(), wRaster, src1.isAlphaPremultiplied(), null);
-		
+		BufferedImage matteImage = new BufferedImage(src1.getWidth(), src1.getHeight(), src1.getType());
+
 		// keying based on chrominance
 		int width = src1.getWidth();
         int height = src1.getHeight();
@@ -178,8 +180,7 @@ public class TileImage {
 //    SOURCE: IAT455 Assignment 1 by Ivy Wong
     // used for the composite image 
     private BufferedImage removeBackground(BufferedImage src1, BufferedImage matteImage) {
-    	WritableRaster wRaster = src1.copyData(null);
-		BufferedImage compositeImage = new BufferedImage(src1.getColorModel(), wRaster, src1.isAlphaPremultiplied(), null);
+		BufferedImage compositeImage = new BufferedImage(src1.getWidth(), src1.getHeight(), src1.getType());
 //		O = (A x M) + [(1 � M) x B]
 //		image 1 is the foreground, image 2 is the background using matteImage
 		
