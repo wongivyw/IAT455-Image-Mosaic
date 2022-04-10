@@ -47,7 +47,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 //	public final static int MOSAIC_UI_EDIT = 2;
 	
 	public final static int SCALED_IMAGE_SIZE = 1280;
-	public final static int SCALED_TILE_IMAGE_SIZE = 2;
+	public final static int SCALED_TILE_IMAGE_SIZE = 200;
 	public final static int SCALED_UI_IMAGE_SIZE = 300;
 
 //	 * 1280 is divisible by are 
@@ -89,7 +89,18 @@ public class MosaicPanel extends JPanel implements ActionListener {
 	private static final int MAIN7 = 9;
 	private static final int MAIN8 = 10;
 	
+	//grid sizes for user to choose from
+	private static final int GRID_S = 20;	
+	private static final int GRID_M = 21;	
+	private static final int GRID_L = 22;	
+	private static final int GRID_XL = 23;	
 	
+	private static final String NEXT_BUTTON_NAME = "next";	
+	private static final String GRID_S_BUTTON_NAME = "small";	
+	private static final String GRID_M_BUTTON_NAME = "medium";	
+	private static final String GRID_L_BUTTON_NAME = "large";	
+	private static final String GRID_XL_BUTTON_NAME = "extra-large";	
+
 	ArrayList<Screen> screens = new ArrayList<Screen>();
 	int currentScreen;
 	
@@ -296,15 +307,16 @@ public class MosaicPanel extends JPanel implements ActionListener {
 			
 		case MAIN4: //source image
 			if (sourceImage != null) g2.drawImage(sourceImage, 725, 233, SCALED_UI_IMAGE_SIZE, SCALED_UI_IMAGE_SIZE, null);
+			BufferedImage grid;
+			Color c = new Color(166, 66, 66); //button color red
+			grid = getGridImage(sourceImage, c);
+			g2.drawImage(grid, 725, 233, SCALED_UI_IMAGE_SIZE, SCALED_UI_IMAGE_SIZE, null);
 			break;
 		
 		case MAIN5: //source image with grid
 //			 1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 25, 30, 50, 60, 75, 100, 150, and 300.
-			BufferedImage gridS = operations.smallGrid(sourceImage); //300px total
-			BufferedImage gridM = operations.addGrid(sourceImage, 50, 7); //300px total
-			BufferedImage gridL = operations.addGrid(sourceImage, 100, 10); //300px total
-			BufferedImage gridXL = operations.addGrid(sourceImage, 150, 15); //300px total
-			g2.drawImage(gridM, 725, 233, SCALED_UI_IMAGE_SIZE, SCALED_UI_IMAGE_SIZE, null);
+			grid = getGridImage(sourceImage, Color.black);
+			g2.drawImage(grid, 725, 233, SCALED_UI_IMAGE_SIZE, SCALED_UI_IMAGE_SIZE, null);
 			break;
 			
 		case MAIN6: //source avg colors + tile avg colors
@@ -316,7 +328,10 @@ public class MosaicPanel extends JPanel implements ActionListener {
 				
 				// draw avg color image of source image
 				BufferedImage srcImg_avgColors = operations.computeAvgColorInImage(sourceImage, userChosenTileSize, true);
-				g2.drawImage(srcImg_avgColors, 875, 160, SCALED_UI_IMAGE_SIZE/2, SCALED_UI_IMAGE_SIZE/2, null);
+//				g2.drawImage(srcImg_avgColors, 875, 160, SCALED_UI_IMAGE_SIZE/2, SCALED_UI_IMAGE_SIZE/2, null);
+				grid = getGridImage(srcImg_avgColors, Color.black);
+				g2.drawImage(grid, 875, 160, SCALED_UI_IMAGE_SIZE/2, SCALED_UI_IMAGE_SIZE/2, null);
+
 				
 				// draw avg color image of tile image
 				BufferedImage bkgRm = tileImage.getBackgroundRemovedImage();
@@ -346,7 +361,22 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		}
 
 	}
-
+	
+	private BufferedImage getGridImage(BufferedImage original, Color c) {
+		switch (userChosenTileSize) {
+		case GRID_S:
+			return operations.smallGrid(original, c); //300px total, small grid
+		case GRID_M:
+			return operations.addGrid(original, 50, 7, c); //M grid
+		case GRID_L:
+			return operations.addGrid(original, 100, 10, c); //L grid
+		case GRID_XL:
+			return operations.addGrid(original, 150, 15, c); //XL grid
+		default:
+			return operations.addGrid(original, 50, 7, c); //M grid
+		}
+	}
+	
 	private void drawFromTileArray(Graphics2D g2, ArrayList<TileImage> orderedTiles, int numTiles, int numCols, int tileW,
 		int tileH, int xPos, int yPos) {
 		for (int i = 0; i < numTiles; i++) {
@@ -396,17 +426,28 @@ public class MosaicPanel extends JPanel implements ActionListener {
 	private void setButtons() {
 //		addButtonArea(xpos, ypos, width, height)
 		int xPos = 141;
-		screens.get(INTRO1).addButtonArea(141, 452, 123, 43);
-		screens.get(INTRO2).addButtonArea(141, 452, 123, 43);
-		screens.get(INTRO3).addButtonArea(141, 452, 123, 43);
-		screens.get(MAIN1).addButtonArea(141, 452, 123, 43);
-		screens.get(MAIN2).addButtonArea(141, 452, 123, 43);
-		screens.get(MAIN3).addButtonArea(141, 452, 123, 43);
-		screens.get(MAIN4).addButtonArea(141, 452, 123, 43);
-		screens.get(MAIN5).addButtonArea(141, 452, 123, 43);
-		screens.get(MAIN6).addButtonArea(141, 452, 123, 43);
-		screens.get(MAIN7).addButtonArea(141, 452, 123, 43);
-		screens.get(MAIN8).addButtonArea(141, 452, 123, 43);
+		screens.get(INTRO1).addButtonArea(xPos, 452, 123, 43, NEXT_BUTTON_NAME);
+		screens.get(INTRO2).addButtonArea(xPos, 452, 123, 43, NEXT_BUTTON_NAME);
+		screens.get(INTRO3).addButtonArea(xPos, 452, 123, 43, NEXT_BUTTON_NAME);
+		screens.get(MAIN1).addButtonArea(xPos, 452, 123, 43, NEXT_BUTTON_NAME);
+		screens.get(MAIN2).addButtonArea(xPos, 452, 123, 43, NEXT_BUTTON_NAME);
+		screens.get(MAIN3).addButtonArea(xPos, 452, 123, 43, NEXT_BUTTON_NAME);
+		screens.get(MAIN4).addButtonArea(xPos, 452, 123, 43, NEXT_BUTTON_NAME);
+		screens.get(MAIN5).addButtonArea(xPos, 452, 123, 43, NEXT_BUTTON_NAME);
+		screens.get(MAIN6).addButtonArea(xPos, 452, 123, 43, NEXT_BUTTON_NAME);
+		screens.get(MAIN7).addButtonArea(xPos, 452, 123, 43, NEXT_BUTTON_NAME);
+		screens.get(MAIN8).addButtonArea(xPos, 452, 123, 43, NEXT_BUTTON_NAME);
+		
+		//buttons for MAIN4 -- user choses tile size + display grid
+		int yPos = 200;
+		int height = 30;
+		screens.get(MAIN4).addButtonArea(735, yPos, 52, height, GRID_S_BUTTON_NAME);
+		screens.get(MAIN4).addButtonArea(790, yPos, 76, height, GRID_M_BUTTON_NAME);
+		screens.get(MAIN4).addButtonArea(870, yPos, 60, height, GRID_L_BUTTON_NAME);
+		screens.get(MAIN4).addButtonArea(933, yPos, 90, height, GRID_XL_BUTTON_NAME);
+		
+		//reset buttons
+		
 
 	}
 	
@@ -417,9 +458,17 @@ public class MosaicPanel extends JPanel implements ActionListener {
 			int eX = e.getX();
 			int eY = e.getY();
 
+			Screen screen = screens.get(currentScreen);
 			// go to next screen if button on current screen is clicked
-			if (screens.get(currentScreen).isButtonClicked(eX, eY)) nextScreen();
+			if (screen.isButtonClicked(eX, eY, "next")) nextScreen();
 			if (currentScreen == MAIN3) addAnimation();
+			if (currentScreen == MAIN4) {
+				// check for clicks on tile size
+				if (screen.isButtonClicked(eX, eY, GRID_S_BUTTON_NAME)) userChosenTileSize = GRID_S;
+				if (screen.isButtonClicked(eX, eY, GRID_M_BUTTON_NAME)) userChosenTileSize = GRID_M;
+				if (screen.isButtonClicked(eX, eY, GRID_L_BUTTON_NAME)) userChosenTileSize = GRID_L;
+				if (screen.isButtonClicked(eX, eY, GRID_XL_BUTTON_NAME)) userChosenTileSize = GRID_XL;
+			}
 			
 			//handles double click events
 			if (e.getClickCount() == 2) { 

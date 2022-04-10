@@ -7,6 +7,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Double;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -17,8 +18,8 @@ public class Screen {
 	boolean successful;
 	
 	//button for mouse clicks
-	Rectangle2D.Double button;
-	int buttonX, buttonY;
+	ArrayList<Button> buttons = new ArrayList<Button>();
+//	int buttonX, buttonY;
 	
 	public Screen (String filePath, int w, int h) {
 		this.filePath = filePath;
@@ -37,9 +38,11 @@ public class Screen {
 	public void draw(Graphics2D g2) {
 		g2.drawImage(screen, 0, 0, w, h, null);
 		
-		if (button != null) {
-			g2.setColor(Color.cyan);
-			g2.draw(button);
+		if (!buttons.isEmpty()) {
+			for (Button b : buttons) {
+				b.draw(g2);
+			}
+
 		}
 	}
 	
@@ -47,13 +50,16 @@ public class Screen {
 		return successful;
 	}
 	
-	public void addButtonArea(int xPos, int yPos, int w, int h) {
-		button = new Rectangle2D.Double(xPos, yPos, w, h);
+	public void addButtonArea(int xPos, int yPos, int w, int h, String buttonName) {
+		Rectangle2D.Double newButton = new Rectangle2D.Double(xPos, yPos, w, h);
+		buttons.add(new Button(newButton, buttonName));
 	}
 
-	public boolean isButtonClicked(int xPos, int yPos) {
-		if (button.contains(xPos, yPos)) {
-			return true;
+	public boolean isButtonClicked(int xPos, int yPos, String buttonName) {
+		for (Button b : buttons) {
+			if (b.getName().equals(buttonName)) {
+				return b.isClicked(xPos, yPos);
+			}
 		}
 		return false;
 	}
