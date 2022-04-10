@@ -72,6 +72,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 	private static final String GRID_M_BUTTON_NAME = "medium";	
 	private static final String GRID_L_BUTTON_NAME = "large";	
 	private static final String GRID_XL_BUTTON_NAME = "extra-large";
+	private static final String RESET_BUTTON_NAME = "reset";
 
 	public int page;
 	public BufferedImage solidColor, mickeyMinnie, arcDeTriomphe, parrot, stream;
@@ -101,27 +102,29 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		addMouseMotionListener(mml);
 		
 		if (loadScreenImages()) { //new UI
-			currentScreen = INTRO1;
+			currentScreen = MAIN8;
 			setButtons();
 		}//if
 		
 		userChosenTileSize = GRID_M; //will change based on what the user chooses, this is the default
 		if (loadSrcImages()) sourceImage = mickeyMinnie;
-//		loadTileImages(userChosenTileSize);
+		loadTileUIImage();
+		loadTileImages(userChosenTileSize);
 		operations = new MosaicOp(sourceImage, tileImgs, userChosenTileSize);
-		loadTileImages(GRID_S);
-		finalMosaic_S = new MosaicOp(sourceImage, tileImgs, 2).getMosaicImage();
+//		loadTileImages(GRID_S);
+//		finalMosaic_S = new MosaicOp(sourceImage, tileImgs, 2).getMosaicImage();
 		loadTileImages(GRID_M);
 		finalMosaic_M = new MosaicOp(sourceImage, tileImgs, 20).getMosaicImage();
-		loadTileImages(GRID_L);
-		finalMosaic_L = new MosaicOp(sourceImage, tileImgs, 64).getMosaicImage();
-		loadTileImages(GRID_XL);
-		finalMosaic_XL = new MosaicOp(sourceImage, tileImgs, 128).getMosaicImage();
+//		loadTileImages(GRID_L);
+//		finalMosaic_L = new MosaicOp(sourceImage, tileImgs, 64).getMosaicImage();
+//		loadTileImages(GRID_XL);
+//		finalMosaic_XL = new MosaicOp(sourceImage, tileImgs, 128).getMosaicImage();
 		finalMosaic = finalMosaic_M;
 		//animation of pixelation (reducing to one color)
 		timer = new Timer(30, this);
 		timer.start();
 		animationTimer = TIME_BETWEEN_FRAMES;
+		addAnimation();
 	}
 	
 	//methods to load images from file. returns false if error occurs
@@ -226,17 +229,25 @@ public class MosaicPanel extends JPanel implements ActionListener {
 			TileImage tile = new TileImage(inputPath, outputPath, size, size);
 			if (tile.getAverageColor() != null) tileImgs.add(tile);
 		}
-		
-		//load larger tile image to be displayed to user
-		String pathIn = folder.concat(name).concat("41").concat(format);
-		String pathOut = folder.concat(name).concat("41").concat("-scaled2").concat(format);
-		tileImage = new TileImage(pathIn, pathOut, SCALED_UI_IMAGE_SIZE, SCALED_UI_IMAGE_SIZE);
-
 
 		if (tileImgs.size() == numImages) return true;
 		System.out.println("Tile images not loaded properly.");
 		return false;
 			
+	}
+	
+	private void loadTileUIImage() {
+		String format = ".jpg";
+		String folder = "tiles/";
+		String name = "tile-";
+		//load larger tile image to be displayed to user
+		String pathIn = folder.concat(name).concat("41").concat(format);
+		String pathOut = folder.concat(name).concat("41").concat("-scaled2").concat(format);
+		tileImage = new TileImage(pathIn, pathOut, SCALED_UI_IMAGE_SIZE, SCALED_UI_IMAGE_SIZE);
+
+		if (tileImage.getAverageColor() == null) {
+			System.out.println("load tile UI error");
+		}
 	}
 	
 	@Override
@@ -430,18 +441,18 @@ public class MosaicPanel extends JPanel implements ActionListener {
 //		addButtonArea(xpos, ypos, width, height)
 		int xPos = 141;
 		screens.get(INTRO1).addButtonArea(xPos, 452, 123, 43, NEXT_BUTTON_NAME);
-		screens.get(INTRO2).addButtonArea(xPos, 452, 123, 43, NEXT_BUTTON_NAME);
-		screens.get(INTRO3).addButtonArea(xPos, 452, 123, 43, NEXT_BUTTON_NAME);
-		screens.get(MAIN1).addButtonArea(xPos, 452, 123, 43, NEXT_BUTTON_NAME);
-		screens.get(MAIN2).addButtonArea(xPos, 452, 123, 43, NEXT_BUTTON_NAME);
-		screens.get(MAIN3).addButtonArea(xPos, 452, 123, 43, NEXT_BUTTON_NAME);
-		screens.get(MAIN4).addButtonArea(xPos, 452, 123, 43, NEXT_BUTTON_NAME);
-		screens.get(MAIN5).addButtonArea(xPos, 452, 123, 43, NEXT_BUTTON_NAME);
-		screens.get(MAIN6).addButtonArea(xPos, 452, 123, 43, NEXT_BUTTON_NAME);
-		screens.get(MAIN7).addButtonArea(xPos, 452, 123, 43, NEXT_BUTTON_NAME);
-		screens.get(MAIN8).addButtonArea(xPos, 452, 123, 43, NEXT_BUTTON_NAME);
+		screens.get(INTRO2).addButtonArea(xPos, 452, 102, 43, NEXT_BUTTON_NAME);
+		screens.get(INTRO3).addButtonArea(137, 475, 135, 42, NEXT_BUTTON_NAME);
+		screens.get(MAIN1).addButtonArea(128, 453, 209, 43, NEXT_BUTTON_NAME);
+		screens.get(MAIN2).addButtonArea(128, 461, 285, 43, NEXT_BUTTON_NAME);
+		screens.get(MAIN3).addButtonArea(128, 475, 228, 43, NEXT_BUTTON_NAME);
+		screens.get(MAIN4).addButtonArea(128, 493, 100, 43, NEXT_BUTTON_NAME);
+		screens.get(MAIN5).addButtonArea(xPos, 452, 249, 43, NEXT_BUTTON_NAME);
+		screens.get(MAIN6).addButtonArea(128, 500, 139, 43, NEXT_BUTTON_NAME);
+		screens.get(MAIN7).addButtonArea(xPos, 452, 180, 43, NEXT_BUTTON_NAME);
+		screens.get(MAIN8).addButtonArea(142, 495, 198, 43, NEXT_BUTTON_NAME);
 		
-		//buttons for MAIN4 -- user choses tile size + display grid
+		//buttons for MAIN4 -- user chosen tile size + display grid
 		int yPos = 200;
 		int height = 30;
 		screens.get(MAIN4).addButtonArea(735, yPos, 52, height, GRID_S_BUTTON_NAME);
@@ -450,8 +461,10 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		screens.get(MAIN4).addButtonArea(933, yPos, 90, height, GRID_XL_BUTTON_NAME);
 		
 		//reset buttons
+		for (int i = MAIN1; i < screens.size(); i++) {
+			screens.get(i).addButtonArea(995, 39, 64, 23, RESET_BUTTON_NAME);
+		}
 		
-
 	}
 	
 	// SOURCE for mouse events taken from IAT 265 cafe project by Ivy
@@ -462,7 +475,8 @@ public class MosaicPanel extends JPanel implements ActionListener {
 
 			Screen screen = screens.get(currentScreen);
 			// go to next screen if button on current screen is clicked
-			if (screen.isButtonClicked(eX, eY, "next")) nextScreen();
+			if (screen.isButtonClicked(eX, eY, NEXT_BUTTON_NAME)) nextScreen();
+			if (screen.isButtonClicked(eX, eY, RESET_BUTTON_NAME)) currentScreen = INTRO1; //reset button behaviour
 			if (currentScreen == MAIN3) addAnimation();
 			if (currentScreen == MAIN4) {
 				// check for clicks on tile size
@@ -471,6 +485,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 				if (screen.isButtonClicked(eX, eY, GRID_L_BUTTON_NAME)) userChosenTileSize = GRID_L;
 				if (screen.isButtonClicked(eX, eY, GRID_XL_BUTTON_NAME)) userChosenTileSize = GRID_XL;
 			}
+
 			
 			//handles double click events
 			if (e.getClickCount() == 2) { 
