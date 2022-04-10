@@ -28,7 +28,6 @@ public class TileImage {
 			image = ImageIO.read(new File(outputName)); // original image
 			avgCol = computeAverageColor(); //do this on original image
 			avgColofBkgRemmoved = computeAverageColorIgnoreBlack(); // do this to background removed img
-			
 			bkgRemoved = getBackgroundRemoved(); //remove background on image
 //			avgCol = computeAverageColorIgnoreBlack(); // do this on background removed image
 			
@@ -61,6 +60,17 @@ public class TileImage {
 		return avgCol;
 	}
 	
+	public BufferedImage getAverageColorImage() {
+		BufferedImage avgColImg = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
+		for (int x = 0; x < image.getWidth(); x++) {
+			for (int y = 0; y < image.getHeight(); y++) {
+				avgColImg.setRGB(x, y, avgCol.getRGB());
+			}
+		}
+		return avgColImg;
+	}
+
+	
 	public Color getAverageColorOfBkgRemoved() {
 		return avgColofBkgRemmoved;
 	}
@@ -91,7 +101,6 @@ public class TileImage {
 	private Color computeAverageColorIgnoreBlack() {
 		if (bkgRemoved == null) return null;
 		int red = 0, green = 0, blue = 0;
-//		int numPixelsInImage = 0;
 		int count = 0;
 		
 		for (int x = 0; x < bkgRemoved.getWidth(); x++) {
@@ -103,7 +112,7 @@ public class TileImage {
 					red += Util.getRed(rgb);
 					green += Util.getGreen(rgb);
 					blue += Util.getBlue(rgb);
-					
+				
 					count++;
 				}
 			}

@@ -14,17 +14,8 @@ import javax.imageio.ImageIO;
 import main.MosaicPanel;
 
 public class MosaicOp {
-/*
- * Tile size can be anything divisible by the size of the square source image. The size of the current source is 3547 and 1024.
- * 1024 is divisible by are 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, and 1024.
- * 1280 is divisible by are 1, 2, 4, 5, 8, 10, 16, 20, 32, 40, 64, 80, 128, 160, 256, 320, 640, and 1280.
- */
-	
-//	public final static int TILE_SIZE = 50;
-
 	private ArrayList<TileImage> tiles; // tile images used for mosaic
 	private ArrayList<Color> tileColorAvgs; // tile images used for mosaic
-//	ArrayList<BufferedImage> srcTiles; // src image split up into tiles
 	private BufferedImage src; // image to turn into a mosaic
 	private ArrayList<Color> srcColorAvgs; //array of averages for each tile from src image
 	private TileImage controlImage; //control for comparing images (average colors)
@@ -41,7 +32,7 @@ public class MosaicOp {
 		height = src.getHeight();
 		this.tileSize = tileSize;
 		
-		rows = src.getHeight(null)/tileSize;
+		rows = src.getHeight()/tileSize;
 		cols = rows;
 		
 		
@@ -329,7 +320,7 @@ public class MosaicOp {
 		//check that the tiles will fit into src
 		if (src.getWidth() != tileSize*Math.sqrt(tiles.size()) ||
 				src.getHeight() != tileSize*Math.sqrt(tiles.size())) 
-			System.out.println("src does not match number of tiles");
+			System.out.println("src does not match number of tiles: " + src.getWidth() + "x" + src.getHeight() + ", " + tileSize + " tile size");
 		
 		for (int i = 0; i < tiles.size(); i++) {
 			//get top left location of next tile

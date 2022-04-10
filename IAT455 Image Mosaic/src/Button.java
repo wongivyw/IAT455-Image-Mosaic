@@ -14,7 +14,7 @@ public class Button {
 	}
 	
 	public void draw(Graphics2D g2) {
-		g2.setColor(Color.cyan);
+		g2.setColor(new Color(204, 191, 188));
 		g2.draw(box);
 	}
 	

@@ -32,46 +32,18 @@ import src.Util;
 
 
 public class MosaicPanel extends JPanel implements ActionListener {
-
-//	private BufferedImage image;
-	private final int textHeight = 30;
-
 	public final static int PAN_W = 1133;//1400;
 	public final static int PAN_H = 744;//750;
 	public final static int NUM_SRCIMG = 4;
-//	public final static int FONT_SIZE_HEADER = 18;
-//	public final static int FONT_SIZE_BODY = 16;
-
-//	public final static int TITLE_UI = 0;
-//	public final static int MOSAIC_UI = 1;
-//	public final static int MOSAIC_UI_EDIT = 2;
 	
 	public final static int SCALED_IMAGE_SIZE = 1280;
-	public final static int SCALED_TILE_IMAGE_SIZE = 200;
+	public final static int SCALED_TILE_IMAGE_SIZE = 2;
+	public final static int SCALED_TILE_IMAGE_SIZE_S = 2;
+	public final static int SCALED_TILE_IMAGE_SIZE_M = 20;
+	public final static int SCALED_TILE_IMAGE_SIZE_L = 64;
+	public final static int SCALED_TILE_IMAGE_SIZE_XL = 128;
 	public final static int SCALED_UI_IMAGE_SIZE = 300;
-
-//	 * 1280 is divisible by are 
-//	small: 1, 2, 4, 5, 
-//	medium: 8, 10, 16, 20, 32, 
-//	large: 40, 64, 
-//	extra large: 80, 128, 160, 256, 320, 640, and 1280.
-
 	public final static int TIME_BETWEEN_FRAMES = 5; // 5/30 of a second
-
-	public int page;
-	public BufferedImage solidColor, mickeyMinnie, arcDeTriomphe, parrot, stream;
-
-	//interactive elements (the buttons)
-//	Rectangle2D.Double beginButton, chooseRandomButton, imgArea1, imgArea2, imgArea3, imgArea4;
-//	Rectangle2D.Double editButton, createAnotherButton, saveButton, editCreateAnotherButton;
-//	ArrayList<Rectangle2D.Double> filterOptions = new ArrayList<Rectangle2D.Double>();
-//	Rectangle2D.Double filterOption1, filterOption2, filterOption3, filterOption4, filterOption5, filterOption6;
-	
-//	TitleUI introPage;
-//	MosaicUI mosaicPage;
-//	MosaicUI_Edit mosaicEditPage;
-	ArrayList<BufferedImage> srcImgs = new ArrayList<BufferedImage>();
-	ArrayList<TileImage> tileImgs = new ArrayList<TileImage>(); // tile images used for mosaic
 
 	// New UI
 	private static final int TOTAL_SCREENS = 11;
@@ -90,16 +62,21 @@ public class MosaicPanel extends JPanel implements ActionListener {
 	private static final int MAIN8 = 10;
 	
 	//grid sizes for user to choose from
-	private static final int GRID_S = 20;	
-	private static final int GRID_M = 21;	
-	private static final int GRID_L = 22;	
-	private static final int GRID_XL = 23;	
+	private static final int GRID_S = 2;	
+	private static final int GRID_M = 20;	
+	private static final int GRID_L = 64;	
+	private static final int GRID_XL = 128;	
 	
 	private static final String NEXT_BUTTON_NAME = "next";	
 	private static final String GRID_S_BUTTON_NAME = "small";	
 	private static final String GRID_M_BUTTON_NAME = "medium";	
 	private static final String GRID_L_BUTTON_NAME = "large";	
-	private static final String GRID_XL_BUTTON_NAME = "extra-large";	
+	private static final String GRID_XL_BUTTON_NAME = "extra-large";
+
+	public int page;
+	public BufferedImage solidColor, mickeyMinnie, arcDeTriomphe, parrot, stream;
+	ArrayList<BufferedImage> srcImgs = new ArrayList<BufferedImage>();
+	ArrayList<TileImage> tileImgs = new ArrayList<TileImage>(); // tile images used for mosaic
 
 	ArrayList<Screen> screens = new ArrayList<Screen>();
 	int currentScreen;
@@ -112,11 +89,10 @@ public class MosaicPanel extends JPanel implements ActionListener {
 	TileImage tileImage;
 	MosaicOp operations;
 	int userChosenTileSize;
+	BufferedImage finalMosaic_S, finalMosaic_M, finalMosaic_L, finalMosaic_XL, finalMosaic;
 		
 	public MosaicPanel() {
-		//UNCOMMENT TO DRAW APPLICATION (COMMENTED OUT DURING TESTING)
 		setPreferredSize(new Dimension(PAN_W, PAN_H));
-//		setBackground(MyColors.red_700);
 
 		// SOURCE for mouse events taken from IAT 265 cafe project by Ivy
 		MyMouseListener ml = new MyMouseListener(); //mouse clicked
@@ -125,20 +101,27 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		addMouseMotionListener(mml);
 		
 		if (loadScreenImages()) { //new UI
-			currentScreen = MAIN4;
+			currentScreen = INTRO1;
 			setButtons();
 		}//if
 		
+		userChosenTileSize = GRID_M; //will change based on what the user chooses, this is the default
 		if (loadSrcImages()) sourceImage = mickeyMinnie;
-		loadTileImages();
-		operations = new MosaicOp(sourceImage, tileImgs, SCALED_TILE_IMAGE_SIZE);
-
-		
+//		loadTileImages(userChosenTileSize);
+		operations = new MosaicOp(sourceImage, tileImgs, userChosenTileSize);
+		loadTileImages(GRID_S);
+		finalMosaic_S = new MosaicOp(sourceImage, tileImgs, 2).getMosaicImage();
+		loadTileImages(GRID_M);
+		finalMosaic_M = new MosaicOp(sourceImage, tileImgs, 20).getMosaicImage();
+		loadTileImages(GRID_L);
+		finalMosaic_L = new MosaicOp(sourceImage, tileImgs, 64).getMosaicImage();
+		loadTileImages(GRID_XL);
+		finalMosaic_XL = new MosaicOp(sourceImage, tileImgs, 128).getMosaicImage();
+		finalMosaic = finalMosaic_M;
 		//animation of pixelation (reducing to one color)
 		timer = new Timer(30, this);
 		timer.start();
 		animationTimer = TIME_BETWEEN_FRAMES;
-		userChosenTileSize = 60; //will change based on what the user chooses, this is the default
 	}
 	
 	//methods to load images from file. returns false if error occurs
@@ -227,7 +210,8 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		return imagesLoaded;
 	}
 	
-	public boolean loadTileImages() {	
+	public boolean loadTileImages(int size) {	
+		tileImgs = new ArrayList<TileImage>();
 		String format = ".jpg";
 		String folder = "tiles/";
 		String name = "tile-";
@@ -239,7 +223,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 			String outputPath = folder.concat(name).concat(Integer.toString(i)).concat("-scaled").concat(format);
 //			System.out.println(inputPath);
 //			System.out.println(outputPath);
-			TileImage tile = new TileImage(inputPath, outputPath, SCALED_TILE_IMAGE_SIZE, SCALED_TILE_IMAGE_SIZE);
+			TileImage tile = new TileImage(inputPath, outputPath, size, size);
 			if (tile.getAverageColor() != null) tileImgs.add(tile);
 		}
 		
@@ -271,8 +255,8 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		 * main2 = tile image with removed background	--ADDED
 		 * main3 = animation							--ADDED
 		 * main4 = source image							--ADDED
-		 * main5 = source image with grid
-		 * main6 = source avg colors + tile avg colors
+		 * main5 = source image with grid				--ADDED
+		 * main6 = source avg colors + tile avg colors	--ADDED
 		 * main7 = source image + reordered tiles		--ADDED
 		 * main8 = final mosaic image					--ADDED
 		 */
@@ -285,11 +269,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 			break;
 			
 		case INTRO3: //draw first 16 tiles images in 4x4 grid
-			//draw reordered tiles
-//			ArrayList<Color> srcColorAvgs = operations.calculateSrcColorAvgs(sourceImage, userChosenTileSize);
-//			ArrayList<TileImage> orderedTiles = operations.computeBestMatches(tileImgs, srcColorAvgs);
 			drawFromTileArray(g2, tileImgs, 16, 4, 65, 65, 750, 280);
-			
 			
 			break;
 			
@@ -314,7 +294,6 @@ public class MosaicPanel extends JPanel implements ActionListener {
 			break;
 		
 		case MAIN5: //source image with grid
-//			 1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 25, 30, 50, 60, 75, 100, 150, and 300.
 			grid = getGridImage(sourceImage, Color.black);
 			g2.drawImage(grid, 725, 233, SCALED_UI_IMAGE_SIZE, SCALED_UI_IMAGE_SIZE, null);
 			break;
@@ -323,20 +302,18 @@ public class MosaicPanel extends JPanel implements ActionListener {
 			if (sourceImage != null && tileImage != null) {
 				//draw source image
 				g2.drawImage(sourceImage, 700, 160, SCALED_UI_IMAGE_SIZE/2, SCALED_UI_IMAGE_SIZE/2, null);
-				//draw tile image
-				tileImage.drawBackgroundRemoved(g2, 700, 350, 0.5);
-				
+				drawFromTileArray(g2, tileImgs, 16, 4, 35, 35, 700, 350);
+
 				// draw avg color image of source image
 				BufferedImage srcImg_avgColors = operations.computeAvgColorInImage(sourceImage, userChosenTileSize, true);
-//				g2.drawImage(srcImg_avgColors, 875, 160, SCALED_UI_IMAGE_SIZE/2, SCALED_UI_IMAGE_SIZE/2, null);
 				grid = getGridImage(srcImg_avgColors, Color.black);
 				g2.drawImage(grid, 875, 160, SCALED_UI_IMAGE_SIZE/2, SCALED_UI_IMAGE_SIZE/2, null);
 
 				
-				// draw avg color image of tile image
+				// draw avg color image of 4x4 tile images
 				BufferedImage bkgRm = tileImage.getBackgroundRemovedImage();
 				BufferedImage tileImg_avgColors = operations.computeAvgColorInImage(bkgRm, bkgRm.getHeight(), false);
-				g2.drawImage(tileImg_avgColors, 875, 350, SCALED_UI_IMAGE_SIZE/2, SCALED_UI_IMAGE_SIZE/2, null);
+				drawAvgColFromTileArray(g2, tileImgs, 16, 4, 35, 35, 875, 350);
 				
 			}
 			break;
@@ -352,14 +329,30 @@ public class MosaicPanel extends JPanel implements ActionListener {
 			break;
 		
 		case MAIN8: //final mosaic image
-			BufferedImage mosaicImage = operations.getMosaicImage();
+//			operations = new MosaicOp(sourceImage, tileImgs, userChosenTileSize);
+//			BufferedImage mosaicImage = operations.getMosaicImage();
+			BufferedImage mosaicImage = getFinalMosaic();
 			if (mosaicImage != null) g2.drawImage(mosaicImage, 725, 233, SCALED_UI_IMAGE_SIZE, SCALED_UI_IMAGE_SIZE, null);
 			break;
 			
 		default:
 			break;
 		}
-
+	}
+	
+	private BufferedImage getFinalMosaic() {
+		switch (userChosenTileSize) {
+		case GRID_S:
+			return finalMosaic_S;
+		case GRID_M:
+			return finalMosaic_M;
+		case GRID_L:
+			return finalMosaic_L;
+		case GRID_XL:
+			return finalMosaic_XL;
+		default:
+			return finalMosaic_M;
+		}
 	}
 	
 	private BufferedImage getGridImage(BufferedImage original, Color c) {
@@ -387,6 +380,16 @@ public class MosaicPanel extends JPanel implements ActionListener {
 	
 		}
 	}
+	
+	private void drawAvgColFromTileArray(Graphics2D g2, ArrayList<TileImage> orderedTiles, int numTiles, int numCols, int tileW,
+			int tileH, int xPos, int yPos) {
+			for (int i = 0; i < numTiles; i++) {
+				int col = i%numCols;
+				int row = i/numCols;
+				BufferedImage ti = orderedTiles.get(i).getAverageColorImage();
+				g2.drawImage(ti, xPos+col*tileW, yPos+row*tileH, tileW, tileH, null);
+			}
+		}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -453,7 +456,6 @@ public class MosaicPanel extends JPanel implements ActionListener {
 	
 	// SOURCE for mouse events taken from IAT 265 cafe project by Ivy
 	public class MyMouseListener extends MouseAdapter {
-		
 		public void mouseClicked(MouseEvent e) {
 			int eX = e.getX();
 			int eY = e.getY();
@@ -473,7 +475,6 @@ public class MosaicPanel extends JPanel implements ActionListener {
 			//handles double click events
 			if (e.getClickCount() == 2) { 
 			//double clicked
-//			System.out.println("mouse double clicked");
 			}
 			repaint();
 		}
@@ -481,14 +482,12 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		public void mousePressed(MouseEvent e) {
 			int eX = e.getX();
 			int eY = e.getY();
-//			System.out.println("mouse pressed");
 			repaint();
 		}
 		
 		public void mouseReleased(MouseEvent e) {
 			int eX = e.getX();
 			int eY = e.getY();
-//			System.out.println("mouse released");
 			repaint();
 		}
 	}

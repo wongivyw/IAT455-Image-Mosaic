@@ -19,12 +19,10 @@ public class Screen {
 	
 	//button for mouse clicks
 	ArrayList<Button> buttons = new ArrayList<Button>();
-//	int buttonX, buttonY;
 	
 	public Screen (String filePath, int w, int h) {
 		this.filePath = filePath;
 		try {
-			// scales the image into a square
 			screen = ImageIO.read(new File(filePath)); // original image
 			successful = true;			
 		} catch (Exception e) {
@@ -42,7 +40,6 @@ public class Screen {
 			for (Button b : buttons) {
 				b.draw(g2);
 			}
-
 		}
 	}
 	

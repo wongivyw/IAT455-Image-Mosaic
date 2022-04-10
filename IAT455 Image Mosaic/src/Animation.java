@@ -35,18 +35,6 @@ public class Animation {
 		g2.drawImage(currentFrame, xPos, yPos, (int)(w*scale), (int)(h*scale), null);
 	}
 	
-//	public BufferedImage getNextFrame(int currFrameIndex) {
-//		BufferedImage nextFrame;
-//		if (currFrameIndex < frames.size()-1) {
-//			nextFrame = frames.get(currFrameIndex+1);
-//			currentPos++;
-//		} else {
-//			nextFrame = frames.get(0);
-//			currentPos = 0;
-//		}
-//		return nextFrame;
-//	}
-	
 	public void changeFrame() {
 		if (currentPos < frames.size()-1) {
 			currentPos++;
@@ -88,7 +76,6 @@ public class Animation {
 						green += Util.getGreen(rgba);
 						blue += Util.getBlue(rgba);
 					}
-					
 				}
 				red = Util.clip(red/tileSize);
 				green = Util.clip(green/tileSize);
