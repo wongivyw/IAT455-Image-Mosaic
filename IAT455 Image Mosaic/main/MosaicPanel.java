@@ -102,7 +102,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		addMouseMotionListener(mml);
 		
 		if (loadScreenImages()) { //new UI
-			currentScreen = MAIN8;
+			currentScreen = MAIN6;
 			setButtons();
 		}//if
 		
@@ -111,14 +111,14 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		loadTileUIImage();
 		loadTileImages(userChosenTileSize);
 		operations = new MosaicOp(sourceImage, tileImgs, userChosenTileSize);
-//		loadTileImages(GRID_S);
-//		finalMosaic_S = new MosaicOp(sourceImage, tileImgs, 2).getMosaicImage();
+		loadTileImages(GRID_S);
+		finalMosaic_S = new MosaicOp(sourceImage, tileImgs, 2).getMosaicImage();
 		loadTileImages(GRID_M);
 		finalMosaic_M = new MosaicOp(sourceImage, tileImgs, 20).getMosaicImage();
-//		loadTileImages(GRID_L);
-//		finalMosaic_L = new MosaicOp(sourceImage, tileImgs, 64).getMosaicImage();
-//		loadTileImages(GRID_XL);
-//		finalMosaic_XL = new MosaicOp(sourceImage, tileImgs, 128).getMosaicImage();
+		loadTileImages(GRID_L);
+		finalMosaic_L = new MosaicOp(sourceImage, tileImgs, 64).getMosaicImage();
+		loadTileImages(GRID_XL);
+		finalMosaic_XL = new MosaicOp(sourceImage, tileImgs, 128).getMosaicImage();
 		finalMosaic = finalMosaic_M;
 		//animation of pixelation (reducing to one color)
 		timer = new Timer(30, this);
@@ -257,10 +257,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
 		// draw screen image
-		if (screens != null && !screens.isEmpty()) {
-			screens.get(currentScreen).draw(g2);
-		}
-		
+		if (screens != null && !screens.isEmpty()) screens.get(currentScreen).draw(g2);
 		/*
 		 * main1 = tile image							--ADDED
 		 * main2 = tile image with removed background	--ADDED
@@ -281,7 +278,6 @@ public class MosaicPanel extends JPanel implements ActionListener {
 			
 		case INTRO3: //draw first 16 tiles images in 4x4 grid
 			drawFromTileArray(g2, tileImgs, 16, 4, 65, 65, 750, 280);
-			
 			break;
 			
 		case MAIN1: //tile image
@@ -320,7 +316,6 @@ public class MosaicPanel extends JPanel implements ActionListener {
 				grid = getGridImage(srcImg_avgColors, Color.black);
 				g2.drawImage(grid, 875, 160, SCALED_UI_IMAGE_SIZE/2, SCALED_UI_IMAGE_SIZE/2, null);
 
-				
 				// draw avg color image of 4x4 tile images
 				BufferedImage bkgRm = tileImage.getBackgroundRemovedImage();
 				BufferedImage tileImg_avgColors = operations.computeAvgColorInImage(bkgRm, bkgRm.getHeight(), false);
@@ -386,7 +381,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		for (int i = 0; i < numTiles; i++) {
 			int col = i%numCols;
 			int row = i/numCols;
-			BufferedImage ti = orderedTiles.get(i).getFullSizeImage();
+			BufferedImage ti = orderedTiles.get(i).getBackgroundRemovedImage();
 			g2.drawImage(ti, xPos+col*tileW, yPos+row*tileH, tileW, tileH, null);
 	
 		}
@@ -485,7 +480,6 @@ public class MosaicPanel extends JPanel implements ActionListener {
 				if (screen.isButtonClicked(eX, eY, GRID_L_BUTTON_NAME)) userChosenTileSize = GRID_L;
 				if (screen.isButtonClicked(eX, eY, GRID_XL_BUTTON_NAME)) userChosenTileSize = GRID_XL;
 			}
-
 			
 			//handles double click events
 			if (e.getClickCount() == 2) { 

@@ -13,7 +13,7 @@ import javax.imageio.ImageIO;
 
 public class TileImage {
 	private BufferedImage fullSizeImage, image, bkgRemoved;
-	private Color avgCol, avgColofBkgRemmoved;
+	private Color avgCol, avgColofBkgRemoved;
 	private String name;
 	private int w, h;
 	
@@ -27,14 +27,23 @@ public class TileImage {
 			Util.resize(name, outputName, w, h);
 			image = ImageIO.read(new File(outputName)); // original image
 			avgCol = computeAverageColor(); //do this on original image
-			avgColofBkgRemmoved = computeAverageColorIgnoreBlack(); // do this to background removed img
 			bkgRemoved = getBackgroundRemoved(); //remove background on image
+			avgColofBkgRemoved = computeAverageColorIgnoreBlack(); // do this to background removed img
 //			avgCol = computeAverageColorIgnoreBlack(); // do this on background removed image
 			
 		} catch (Exception e) {
 			System.out.println("Cannot load the provided image: " + outputName);
 		}
 	}
+	
+//	public TileImage(BufferedImage img) {
+//		image = img;
+//		w = img.getWidth();
+//		h = img.getHeight();
+//		avgCol = computeAverageColor();
+//		bkgRemoved = getBackgroundRemoved();
+//		avgColofBkgRemoved = computeAverageColorIgnoreBlack();
+//	}
 	
 	public void draw(Graphics2D g2, int xPos, int yPos, double scale) {
 		g2.drawImage(image, xPos, yPos, (int)(w*scale), (int)(h*scale), null);
@@ -64,7 +73,7 @@ public class TileImage {
 		BufferedImage avgColImg = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
 		for (int x = 0; x < image.getWidth(); x++) {
 			for (int y = 0; y < image.getHeight(); y++) {
-				avgColImg.setRGB(x, y, avgCol.getRGB());
+				avgColImg.setRGB(x, y, avgColofBkgRemoved.getRGB());
 			}
 		}
 		return avgColImg;
@@ -72,7 +81,7 @@ public class TileImage {
 
 	
 	public Color getAverageColorOfBkgRemoved() {
-		return avgColofBkgRemmoved;
+		return avgColofBkgRemoved;
 	}
 	
 	private Color computeAverageColor() {

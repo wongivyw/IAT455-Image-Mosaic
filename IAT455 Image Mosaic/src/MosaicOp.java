@@ -180,13 +180,12 @@ public class MosaicOp {
 		ArrayList<Color> res = new ArrayList<Color>();
 		if (imgs.isEmpty()) return null;
 		for (TileImage i : imgs) {
-			res.add(i.getAverageColor());
-//			res.add(i.getAverageColorOfBkgRemoved());
+//			res.add(i.getAverageColor());
+			res.add(i.getAverageColorOfBkgRemoved());
 		}
 		return res;
 	}
 	
-	// NOT TESTED
 	public ArrayList<TileImage> computeBestMatches(ArrayList<TileImage> tiles, ArrayList<Color> srcColorAverages) {
 		
 		//sort tile image averages
@@ -237,7 +236,6 @@ public class MosaicOp {
 		return finalTiles;
 	}
 	
-	//NOT TESTED
 	// given a color and array of TileImages, returns the TileImage whose avg color is closes to the given color
 	private TileImage[] findBestColorMatch(Color srcCol, ArrayList<TileImage> imgs) {
 		if (imgs == null || imgs.isEmpty()) return null;
@@ -269,7 +267,6 @@ public class MosaicOp {
 		return closestTiles;
 	}
 	
-	//NOT TESTED
 	//computes the difference between two colors c1 and c2 by comparing rgb values
 	private int getColorDifference(Color c1, Color c2) {
 		// we will compare red, green, and blue channels separately.

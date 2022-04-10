@@ -36,11 +36,11 @@ public class Screen {
 	public void draw(Graphics2D g2) {
 		g2.drawImage(screen, 0, 0, w, h, null);
 		
-		if (!buttons.isEmpty()) {
-			for (Button b : buttons) {
-				b.draw(g2);
-			}
-		}
+//		if (!buttons.isEmpty()) {
+//			for (Button b : buttons) {
+//				b.draw(g2);
+//			}
+//		}
 	}
 	
 	public boolean isSuccessful() {
