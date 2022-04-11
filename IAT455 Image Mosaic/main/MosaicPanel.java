@@ -102,7 +102,7 @@ public class MosaicPanel extends JPanel implements ActionListener {
 		addMouseMotionListener(mml);
 		
 		if (loadScreenImages()) { //new UI
-			currentScreen = MAIN6;
+			currentScreen = INTRO1;
 			setButtons();
 		}//if
 		

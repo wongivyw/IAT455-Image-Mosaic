@@ -32,7 +32,7 @@ public class TileImage {
 //			avgCol = computeAverageColorIgnoreBlack(); // do this on background removed image
 			
 		} catch (Exception e) {
-			System.out.println("Cannot load the provided image: " + outputName);
+//			System.out.println("Cannot load the provided image: " + outputName);
 		}
 	}
 	
